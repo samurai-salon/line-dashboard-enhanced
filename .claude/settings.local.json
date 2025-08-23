@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "/Users/pamas/opt/homebrew/bin",
+      "/Users/pamas/Desktop"
+    ]
+  }
+}

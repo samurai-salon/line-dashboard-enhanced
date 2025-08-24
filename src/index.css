@@ -811,13 +811,14 @@ a:hover {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 10px 6px;
+    padding: 10px 12px;
     min-height: 50px;
     color: #6b7280;
     text-decoration: none;
     border-radius: 8px;
     transition: all 0.2s ease;
     gap: 4px;
+    min-width: fit-content;
   }
   
   .mobile-nav-item.active {
@@ -840,12 +841,26 @@ a:hover {
     text-overflow: ellipsis;
   }
   
+  /* 横スクロール用スタイル */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .mobile-nav .flex {
+    scroll-behavior: smooth;
+  }
+
   /* 小さい画面向け最適化 */
   @media (max-width: 375px) {
     .mobile-nav-item {
-      padding: 8px 4px;
+      padding: 8px 10px;
       min-height: 48px;
-      gap: 2px;
+      gap: 3px;
     }
     
     .mobile-nav-item svg {
@@ -855,7 +870,6 @@ a:hover {
     
     .mobile-nav-item span {
       font-size: 0.65rem;
-      max-width: 40px;
     }
     
     .mobile-nav {

@@ -1,5 +1,5 @@
-// src/components/ui/MobileBottomNavigation.jsx - モバイル専用ボトムナビゲーション
-import React from 'react';
+// src/components/ui/MobileBottomNavigation.jsx - 全画面対応ボトムナビゲーション
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, MessageSquare, Users, BarChart3, Settings, Bell, Bot, Smile, HelpCircle
@@ -7,6 +7,7 @@ import {
 
 const MobileBottomNavigation = () => {
   const location = useLocation();
+  const scrollRef = useRef(null);
 
   // サイドバーの全メニューを下部ナビゲーション用に最適化
   const navItems = [
@@ -23,12 +24,31 @@ const MobileBottomNavigation = () => {
     { path: '/user-guide', icon: HelpCircle, label: 'ヘルプ' }
   ];
 
+  // アクティブなアイテムまでスクロール
+  useEffect(() => {
+    const activeIndex = navItems.findIndex(item => 
+      location.pathname === item.path || 
+      (item.path !== '/' && location.pathname.startsWith(item.path))
+    );
+    
+    if (activeIndex !== -1 && scrollRef.current) {
+      const activeElement = scrollRef.current.children[0].children[activeIndex];
+      if (activeElement) {
+        activeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }
+  }, [location.pathname]);
+
   return (
-    <nav className="mobile-nav md:hidden">
+    <nav className="bottom-nav">
       {/* 横スクロール可能なナビゲーション */}
-      <div className="flex overflow-x-auto h-full px-2 scrollbar-hide">
+      <div ref={scrollRef} className="flex overflow-x-auto h-full px-2 scrollbar-hide">
         <div className="flex space-x-1 min-w-max h-full items-center">
-          {navItems.map((item) => {
+          {navItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path || 
                            (item.path !== '/' && location.pathname.startsWith(item.path));
@@ -37,7 +57,7 @@ const MobileBottomNavigation = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`mobile-nav-item flex-shrink-0 ${isActive ? 'active' : ''}`}
+                className={`bottom-nav-item flex-shrink-0 ${isActive ? 'active' : ''}`}
               >
                 <Icon className="w-4 h-4" />
                 <span className="text-xs font-medium whitespace-nowrap">{item.label}</span>

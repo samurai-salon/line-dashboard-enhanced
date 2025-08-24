@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Menu, Bell, Search, User, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 
-const Header = ({ setSidebarOpen }) => {
+const Header = ({ setSidebarOpen, showMenuButton = true }) => {
   const { user, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -35,15 +35,17 @@ const Header = ({ setSidebarOpen }) => {
 
   return (
     <div className="sticky top-0 z-20 flex-shrink-0 flex h-16 bg-white/90 backdrop-blur-xl shadow-lg shadow-black/5 border-b border-gray-200/50">
-      {/* モバイルメニューボタン */}
-      <button
-        type="button"
-        className="px-4 border-r border-gray-200/50 text-gray-500 hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 lg:hidden transition-all duration-200"
-        onClick={() => setSidebarOpen(true)}
-      >
-        <span className="sr-only">サイドバーを開く</span>
-        <Menu className="h-6 w-6" />
-      </button>
+      {/* モバイルメニューボタン - 条件付き表示 */}
+      {showMenuButton && setSidebarOpen && (
+        <button
+          type="button"
+          className="px-4 border-r border-gray-200/50 text-gray-500 hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 lg:hidden transition-all duration-200"
+          onClick={() => setSidebarOpen(true)}
+        >
+          <span className="sr-only">サイドバーを開く</span>
+          <Menu className="h-6 w-6" />
+        </button>
+      )}
 
       <div className="flex-1 px-4 flex justify-between">
         {/* 検索バー */}

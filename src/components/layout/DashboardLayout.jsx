@@ -9,27 +9,17 @@ import MobileBottomNavigation from '../ui/MobileBottomNavigation.jsx';
 import { useAuth } from '../../context/AuthContext.js';
 
 const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex">
-      {/* サイドバー */}
-      <Sidebar 
-        sidebarOpen={sidebarOpen} 
-        setSidebarOpen={setSidebarOpen}
-        userRole={user?.role}
-      />
-      
-      {/* メインコンテンツエリア */}
-      <div className="flex-1 flex flex-col lg:pl-64 transition-all duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* フルスクリーンメインコンテンツエリア */}
+      <div className="flex flex-col min-h-screen">
         {/* ヘッダー */}
-        <Header 
-          setSidebarOpen={setSidebarOpen}
-        />
+        <Header showMenuButton={false} />
         
-        {/* ページコンテンツ */}
-        <main className="flex-1 relative">
+        {/* ページコンテンツ - ボトムナビゲーション分のマージンを追加 */}
+        <main className="flex-1 relative pb-16">
           {/* 背景装飾 */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl"></div>
@@ -37,17 +27,14 @@ const DashboardLayout = () => {
           </div>
           
           <div className="relative z-10 py-6 sm:py-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
               <Outlet />
             </div>
           </div>
         </main>
-
-        {/* モバイル専用ナビゲーション */}
-        <MobileNavigation userRole={user?.role} />
       </div>
       
-      {/* モバイルボトムナビゲーション */}
+      {/* 全画面対応ボトムナビゲーション */}
       <MobileBottomNavigation />
     </div>
   );

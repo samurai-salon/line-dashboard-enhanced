@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header.jsx';
 import Sidebar from './Sidebar.jsx';
 import MobileNavigation from '../ui/MobileNavigation.jsx';
+import MobileBottomNavigation from '../ui/MobileBottomNavigation.jsx';
 import { useAuth } from '../../context/AuthContext.js';
 
 const DashboardLayout = () => {
@@ -45,6 +46,9 @@ const DashboardLayout = () => {
         {/* モバイル専用ナビゲーション */}
         <MobileNavigation userRole={user?.role} />
       </div>
+      
+      {/* モバイルボトムナビゲーション */}
+      <MobileBottomNavigation />
     </div>
   );
 };

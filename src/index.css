@@ -679,3 +679,262 @@ a:hover {
   --radius: 6px;
   --radius-lg: 8px;
 }
+
+/* ===== モバイル対応の大幅改善 ===== */
+@media (max-width: 768px) {
+  /* 基本フォントサイズの拡大 */
+  html {
+    font-size: 18px; /* 16px → 18px */
+  }
+  
+  body {
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* メインコンテナ */
+  .container {
+    padding: 0 12px; /* より大きなパディング */
+  }
+  
+  /* カードコンテナの改善 */
+  .stats-card {
+    padding: 20px 16px; /* より大きなパディング */
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* テキストサイズの改善 */
+  .mobile-text-xs { font-size: 0.875rem; line-height: 1.5; }
+  .mobile-text-sm { font-size: 1rem; line-height: 1.5; }
+  .mobile-text-base { font-size: 1.125rem; line-height: 1.5; }
+  .mobile-text-lg { font-size: 1.25rem; line-height: 1.4; }
+  .mobile-text-xl { font-size: 1.5rem; line-height: 1.3; }
+  .mobile-text-2xl { font-size: 1.75rem; line-height: 1.3; }
+  
+  /* タッチターゲットの最適化 */
+  .mobile-touch-target {
+    min-height: 48px; /* Apple推奨の最小タッチサイズ */
+    min-width: 48px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  /* ボタンの改善 */
+  button, .btn {
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  
+  /* 入力フィールドの改善 */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  textarea,
+  select {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+  }
+  
+  /* スペーシングの調整 */
+  .mobile-spacing {
+    margin: 16px 0;
+  }
+  
+  .mobile-padding-sm { padding: 12px; }
+  .mobile-padding { padding: 16px; }
+  .mobile-padding-lg { padding: 20px; }
+  
+  /* グリッドの改善 */
+  .mobile-grid {
+    display: grid;
+    gap: 16px;
+  }
+  
+  .mobile-grid-1 { grid-template-columns: 1fr; }
+  .mobile-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  
+  /* 統計カードの特別な改善 */
+  .stats-card h3,
+  .stats-card .title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+  }
+  
+  .stats-card .value,
+  .stats-card .number {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  
+  .stats-card .subtitle,
+  .stats-card .description {
+    font-size: 0.875rem;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+  
+  /* ナビゲーションの改善 */
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 8px 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+  
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 4px;
+    min-height: 64px;
+    color: #6b7280;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .mobile-nav-item.active {
+    color: #22c55e;
+    background-color: #f0fdf4;
+  }
+  
+  .mobile-nav-item svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+  }
+  
+  .mobile-nav-item span {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  /* ヘッダーの改善 */
+  .mobile-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px;
+    z-index: 50;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobile-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+  
+  /* モーダル改善 */
+  .mobile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1000;
+    padding: 0;
+  }
+  
+  .mobile-modal-content {
+    background: white;
+    border-radius: 16px 16px 0 0;
+    padding: 24px 20px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideUpMobile 0.3s ease-out;
+  }
+  
+  @keyframes slideUpMobile {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  /* リストアイテムの改善 */
+  .mobile-list-item {
+    padding: 16px;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+  }
+  
+  .mobile-list-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* アイコンとテキストの配置 */
+  .mobile-icon-text {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .mobile-icon-text svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  
+  /* スクロール改善 */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+  
+  /* 余白調整 */
+  .mobile-content {
+    padding-bottom: 80px; /* モバイルナビの高さ分 */
+  }
+}
+
+/* タブレット対応 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html {
+    font-size: 17px;
+  }
+  
+  .stats-card {
+    padding: 24px 20px;
+  }
+  
+  button, .btn {
+    min-height: 44px;
+    padding: 10px 18px;
+  }
+}

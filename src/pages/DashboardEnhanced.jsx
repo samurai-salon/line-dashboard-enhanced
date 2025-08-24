@@ -56,15 +56,17 @@ const DashboardEnhanced = () => {
   const currentStats = statsData[timeRange];
 
   const StatCard = ({ title, value, change, changeType, icon: Icon, color, suffix = '' }) => (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+    <div className="stats-card bg-white p-6 md:p-6 mobile-padding-lg rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-2">
+        <div className="flex-1">
+          <p className="title text-sm md:text-sm mobile-text-base font-medium text-gray-600 mb-2">
+            {title}
+          </p>
+          <p className="value text-3xl md:text-3xl mobile-text-2xl font-bold text-gray-900 mb-2">
             {typeof value === 'number' ? value.toLocaleString() : value}{suffix}
           </p>
           {change !== undefined && (
-            <div className={`flex items-center mt-2 ${
+            <div className={`flex items-center mobile-text-sm ${
               changeType === 'increase' ? 'text-green-600' : 'text-red-600'
             }`}>
               {changeType === 'increase' ? (
@@ -72,13 +74,13 @@ const DashboardEnhanced = () => {
               ) : (
                 <ArrowDownRight className="w-4 h-4 mr-1" />
               )}
-              <span className="text-sm font-medium">
+              <span className="subtitle text-sm font-medium">
                 {Math.abs(change)}% vs 先週
               </span>
             </div>
           )}
         </div>
-        <div className={`p-3 rounded-full bg-${color}-100`}>
+        <div className={`p-3 rounded-full bg-${color}-100 mobile-touch-target`}>
           <Icon className={`w-6 h-6 text-${color}-600`} />
         </div>
       </div>
@@ -86,30 +88,32 @@ const DashboardEnhanced = () => {
   );
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
+    <div className="p-6 md:p-6 mobile-padding space-y-6 bg-gray-50 min-h-screen mobile-content">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">📊 ダッシュボード</h1>
-          <p className="text-gray-600 mt-1">LINE管理システムの総合統計</p>
-        </div>
-        
-        <div className="flex items-center space-x-3">
-          <select
-            value={timeRange}
-            onChange={(e) => setTimeRange(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="24h">過去24時間</option>
-            <option value="7d">過去7日間</option>
-            <option value="30d">過去30日間</option>
-            <option value="90d">過去90日間</option>
-          </select>
+      <div className="mobile-header md:bg-transparent md:border-none md:shadow-none md:p-0">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div className="mb-4 md:mb-0">
+            <h1 className="text-3xl md:text-3xl mobile-text-xl font-bold text-gray-900">📊 ダッシュボード</h1>
+            <p className="text-gray-600 mt-1 mobile-text-sm">LINE管理システムの総合統計</p>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <select
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              className="px-4 py-2 mobile-touch-target border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mobile-text-base"
+            >
+              <option value="24h">過去24時間</option>
+              <option value="7d">過去7日間</option>
+              <option value="30d">過去30日間</option>
+              <option value="90d">過去90日間</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {/* 主要統計カード */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+      <div className="mobile-grid mobile-grid-1 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6">
         <StatCard
           title="総フォロワー"
           value={currentStats.followers.current}

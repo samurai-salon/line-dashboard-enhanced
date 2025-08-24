@@ -800,21 +800,24 @@ a:hover {
     right: 0;
     background: white;
     border-top: 1px solid #e5e7eb;
-    padding: 8px 0;
+    padding: 4px 0;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
+    height: 60px;
   }
   
   .mobile-nav-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    padding: 8px 4px;
-    min-height: 64px;
+    justify-content: center;
+    padding: 10px 6px;
+    min-height: 50px;
     color: #6b7280;
     text-decoration: none;
     border-radius: 8px;
     transition: all 0.2s ease;
+    gap: 4px;
   }
   
   .mobile-nav-item.active {
@@ -823,14 +826,42 @@ a:hover {
   }
   
   .mobile-nav-item svg {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 4px;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
   }
   
   .mobile-nav-item span {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* 小さい画面向け最適化 */
+  @media (max-width: 375px) {
+    .mobile-nav-item {
+      padding: 8px 4px;
+      min-height: 48px;
+      gap: 2px;
+    }
+    
+    .mobile-nav-item svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .mobile-nav-item span {
+      font-size: 0.65rem;
+      max-width: 40px;
+    }
+    
+    .mobile-nav {
+      height: 56px;
+      padding: 2px 0;
+    }
   }
   
   /* ヘッダーの改善 */

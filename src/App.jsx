@@ -4,8 +4,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 
-// GitHub Pages用のbase pathを設定
-const basename = process.env.NODE_ENV === 'production' ? '/line-dashboard-enhanced' : '';
+// Netlify用のbase pathを設定（ルートパス）
+const basename = '';
 import DashboardLayout from './components/layout/DashboardLayout';
 import './index.css'
 

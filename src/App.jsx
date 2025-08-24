@@ -3,6 +3,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+
+// GitHub Pages用のbase pathを設定
+const basename = process.env.NODE_ENV === 'production' ? '/line-dashboard-enhanced' : '';
 import DashboardLayout from './components/layout/DashboardLayout';
 import './index.css'
 
@@ -124,7 +127,7 @@ const UserGuidePage = () => (
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename={basename}>
         <div className="App">
           <Routes>
             <Route path="/" element={<DashboardLayout />}>

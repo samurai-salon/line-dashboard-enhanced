@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Settings, User, LogOut, Crown, Shield, Star } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
+import UnreadMessagePreview from '../ui/UnreadMessagePreview.jsx';
 
 const AdminBanner = () => {
   const { user, logout } = useAuth();
@@ -71,7 +72,6 @@ const AdminBanner = () => {
               <div>
                 <h1 className="text-base md:text-lg font-bold flex items-center space-x-3">
                   <span>Samurai Arc.株式会社</span>
-                  <span className="text-blue-200">|</span>
                   <span className="text-blue-100 font-medium text-sm md:text-base">LINE管理システム</span>
                 </h1>
               </div>
@@ -80,6 +80,12 @@ const AdminBanner = () => {
             {/* 第2行: ユーザー情報 */}
             <div className="flex items-center justify-between">
               <div className="flex-1"></div>
+              
+              {/* 通知アイコン */}
+              <div className="mr-4">
+                <UnreadMessagePreview />
+              </div>
+              
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setShowDropdown(!showDropdown)}

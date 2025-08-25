@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Menu, Bell, Search, User, Settings, LogOut, Clock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
+import UnreadMessagePreview from '../ui/UnreadMessagePreview.jsx';
 
 const Header = ({ setSidebarOpen, showMenuButton = true, hideUserInfo = false }) => {
   const { user, logout } = useAuth();
@@ -19,9 +20,6 @@ const Header = ({ setSidebarOpen, showMenuButton = true, hideUserInfo = false })
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  // 通知の未読数（デモ用）
-  const unreadCount = 2;
 
   return (
     <div className="sticky top-0 z-20 flex-shrink-0 flex h-16 bg-white/90 backdrop-blur-xl shadow-lg shadow-black/5 border-b border-gray-200/50">
@@ -58,22 +56,8 @@ const Header = ({ setSidebarOpen, showMenuButton = true, hideUserInfo = false })
 
         {/* 右側のメニュー */}
         <div className="ml-4 flex items-center md:ml-6 space-x-4">
-          {/* 通知ベル - 通知センターへのリンク */}
-          <div className="relative">
-            <a
-              href="/notification-center"
-              className="relative p-2 rounded-xl bg-gray-50/50 text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200 block"
-            >
-              <span className="sr-only">通知センターを開く</span>
-              <Bell className="h-5 w-5" />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full text-xs flex items-center justify-center font-bold shadow-lg">
-                  {unreadCount}
-                </span>
-              )}
-            </a>
-
-          </div>
+          {/* 未読メッセージプレビュー */}
+          <UnreadMessagePreview />
 
           {/* ユーザーメニュー - 条件付き表示 */}
           {!hideUserInfo && (

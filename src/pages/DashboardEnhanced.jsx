@@ -473,37 +473,37 @@ const DashboardEnhanced = () => {
             <Calendar className="w-5 h-5 text-gray-400" />
           </div>
           
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Send className="w-8 h-8 text-blue-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <Send className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
               </div>
-              <p className="text-2xl font-bold text-gray-900">12</p>
-              <p className="text-sm text-gray-600">総配信数</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">12</p>
+              <p className="text-xs sm:text-sm text-gray-600">総配信数</p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <CheckCircle className="w-8 h-8 text-green-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
               </div>
-              <p className="text-2xl font-bold text-gray-900">11</p>
-              <p className="text-sm text-gray-600">成功配信</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">11</p>
+              <p className="text-xs sm:text-sm text-gray-600">成功配信</p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Eye className="w-8 h-8 text-yellow-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <Eye className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600" />
               </div>
-              <p className="text-2xl font-bold text-gray-900">67.8%</p>
-              <p className="text-sm text-gray-600">平均開封率</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">67.8%</p>
+              <p className="text-xs sm:text-sm text-gray-600">平均開封率</p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Users className="w-8 h-8 text-purple-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <Users className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
               </div>
-              <p className="text-2xl font-bold text-gray-900">4,090</p>
-              <p className="text-sm text-gray-600">総リーチ数</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">4,090</p>
+              <p className="text-xs sm:text-sm text-gray-600">総リーチ数</p>
             </div>
           </div>
           

@@ -50,10 +50,12 @@ const ROLE_PERMISSIONS = {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({
     id: 1,
-    name: "山田太郎",
-    email: "yamada@example.com",
+    name: "Samurai Arc.株式会社",
+    email: "admin@samuraiarc.com",
     role: "admin",
-    avatar: null
+    avatar: null,
+    company: "Samurai Arc.株式会社",
+    department: "システム管理部"
   });
 
   const [isAuthenticated, setIsAuthenticated] = useState(true);

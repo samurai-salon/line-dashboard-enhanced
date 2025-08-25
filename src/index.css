@@ -894,14 +894,25 @@ a:hover {
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
   
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
   
+  .bottom-nav .scrollbar-hide,
   .mobile-nav .flex {
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* ナビゲーション項目に十分な幅を確保 */
+  .bottom-nav-item,
+  .mobile-nav-item {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   /* 小さい画面向け最適化 */

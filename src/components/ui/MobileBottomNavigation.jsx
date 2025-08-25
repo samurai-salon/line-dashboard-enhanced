@@ -46,8 +46,8 @@ const MobileBottomNavigation = () => {
   return (
     <nav className="bottom-nav">
       {/* 横スクロール可能なナビゲーション */}
-      <div ref={scrollRef} className="flex overflow-x-auto h-full px-2 scrollbar-hide">
-        <div className="flex space-x-1 min-w-max h-full items-center">
+      <div ref={scrollRef} className="flex overflow-x-auto h-full px-2 scrollbar-hide" style={{ scrollBehavior: 'smooth' }}>
+        <div className="flex space-x-2 h-full items-center" style={{ minWidth: `${navItems.length * 120}px` }}>
           {navItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path || 
@@ -58,6 +58,7 @@ const MobileBottomNavigation = () => {
                 key={item.path}
                 to={item.path}
                 className={`bottom-nav-item flex-shrink-0 ${isActive ? 'active' : ''}`}
+                style={{ minWidth: '110px' }}
               >
                 <Icon className="w-4 h-4" />
                 <span className="text-xs font-medium whitespace-nowrap">{item.label}</span>

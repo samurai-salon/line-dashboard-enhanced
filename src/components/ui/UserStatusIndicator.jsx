@@ -84,7 +84,7 @@ const UserStatusIndicator = ({ showDetails = false }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium text-gray-900 truncate">
-              {user?.name || 'ユーザー'}
+              {user?.company || user?.name || 'ユーザー'}
             </p>
             <div className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleInfo.bgLight} ${roleInfo.textColor}`}>
               <RoleIcon className="h-3 w-3 mr-1" />
@@ -92,7 +92,7 @@ const UserStatusIndicator = ({ showDetails = false }) => {
             </div>
           </div>
           <p className="text-xs text-gray-500 truncate">
-            {user?.email || 'user@example.com'}
+            {user?.department || user?.email || 'user@example.com'}
           </p>
         </div>
 
@@ -117,11 +117,16 @@ const UserStatusIndicator = ({ showDetails = false }) => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900">
-                  {user?.name || 'ユーザー'}
+                  {user?.company || user?.name || 'ユーザー'}
                 </p>
                 <p className="text-xs text-gray-500">
-                  {user?.email || 'user@example.com'}
+                  {user?.department || user?.email || 'user@example.com'}
                 </p>
+                {user?.email && (
+                  <p className="text-xs text-gray-400 mt-1">
+                    {user.email}
+                  </p>
+                )}
                 <div className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium mt-1 ${roleInfo.bgLight} ${roleInfo.textColor}`}>
                   <RoleIcon className="h-3 w-3 mr-1" />
                   {roleInfo.label}

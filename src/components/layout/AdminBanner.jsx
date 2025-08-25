@@ -66,13 +66,10 @@ const AdminBanner = () => {
       <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-4">
-            {/* 第1行: 会社名 | システム名 */}
+            {/* 第1行: 会社名 | システム名 - シンプル版 */}
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                  <span className="text-white font-bold">S</span>
-                </div>
-                <h1 className="text-base md:text-lg font-bold flex items-center space-x-2 md:space-x-3">
+              <div>
+                <h1 className="text-base md:text-lg font-bold flex items-center space-x-3">
                   <span>Samurai Arc.株式会社</span>
                   <span className="text-blue-200">|</span>
                   <span className="text-blue-100 font-medium text-sm md:text-base">LINE管理システム</span>

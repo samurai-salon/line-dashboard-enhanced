@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Menu, Bell, Search, User, Settings, LogOut, Clock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
-import UnreadMessagePreview from '../ui/UnreadMessagePreview.jsx';
 
 const Header = ({ setSidebarOpen, showMenuButton = true, hideUserInfo = false }) => {
   const { user, logout } = useAuth();
@@ -36,9 +35,9 @@ const Header = ({ setSidebarOpen, showMenuButton = true, hideUserInfo = false })
       )}
 
       <div className="flex-1 px-4 flex justify-between">
-        {/* 検索バー */}
-        <div className="flex-1 flex items-center">
-          <div className="w-full max-w-lg mx-auto">
+        {/* 検索バー - 拡張版 */}
+        <div className="flex-1 flex items-center mr-4">
+          <div className="w-full max-w-2xl mx-auto">
             <label htmlFor="search-field" className="sr-only">検索</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none pl-3">
@@ -55,9 +54,7 @@ const Header = ({ setSidebarOpen, showMenuButton = true, hideUserInfo = false })
         </div>
 
         {/* 右側のメニュー */}
-        <div className="ml-4 flex items-center md:ml-6 space-x-4">
-          {/* 未読メッセージプレビュー */}
-          <UnreadMessagePreview />
+        <div className="flex items-center space-x-4">
 
           {/* ユーザーメニュー - 条件付き表示 */}
           {!hideUserInfo && (

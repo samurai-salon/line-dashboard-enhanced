@@ -31,6 +31,7 @@ import CallRequest from './pages/chat/CallRequest';
 import CallHistory from './pages/chat/CallHistory';
 import AutoReply from './pages/automation/AutoReply';
 import UserGuide from './pages/help/UserGuide';
+import NotificationCenter from './pages/NotificationCenter';
 
 // ダッシュボードページ（拡張版を使用）
 const DashboardPage = () => <DashboardEnhanced />;
@@ -124,6 +125,8 @@ const UserGuidePage = () => (
   </div>
 );
 
+const NotificationCenterPage = () => <NotificationCenter />;
+
 function App() {
   return (
     <AuthProvider>
@@ -148,6 +151,7 @@ function App() {
               <Route path="call-history" element={<CallHistoryPage />} />
               <Route path="automation/auto-reply" element={<AutoReplyPage />} />
               <Route path="user-guide" element={<UserGuidePage />} />
+              <Route path="notification-center" element={<NotificationCenterPage />} />
             </Route>
             {/* テスト用の直接ルート */}
             <Route path="/test-simple" element={<MessagesSimplePage />} />

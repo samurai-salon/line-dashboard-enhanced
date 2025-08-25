@@ -17,6 +17,7 @@ const MobileBottomNavigation = () => {
     { path: '/automation/auto-reply', icon: Bot, label: '自動化' },
     { path: '/emoji-manager', icon: Smile, label: '絵文字' },
     { path: '/users', icon: Users, label: 'ユーザー管理' },
+    { path: '/notification-center', icon: Bell, label: '通知確認' },
     { path: '/notifications', icon: Bell, label: 'プッシュ通知' },
     { path: '/analytics', icon: BarChart3, label: '分析・統計' },
     { path: '/line-settings', icon: Settings, label: 'LINE設定' },

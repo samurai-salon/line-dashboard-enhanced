@@ -167,6 +167,14 @@ const DashboardEnhanced = () => {
             <Smile className="w-6 h-6 text-yellow-600 mb-2" />
             <span className="text-xs font-medium text-yellow-900 text-center">絵文字管理</span>
           </Link>
+          
+          <Link 
+            to="/notification-center"
+            className="flex flex-col items-center p-3 bg-red-50 hover:bg-red-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <Bell className="w-6 h-6 text-red-600 mb-2" />
+            <span className="text-xs font-medium text-red-900 text-center">通知確認</span>
+          </Link>
         </div>
       </div>
 

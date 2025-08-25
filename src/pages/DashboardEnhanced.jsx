@@ -112,6 +112,64 @@ const DashboardEnhanced = () => {
         </div>
       </div>
 
+      {/* クイックアクション - 上部に移動 */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">クイックアクション</h3>
+          <Target className="w-5 h-5 text-gray-400" />
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          <Link 
+            to="/test-broadcast"
+            className="flex flex-col items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <Send className="w-6 h-6 text-blue-600 mb-2" />
+            <span className="text-xs font-medium text-blue-900 text-center">新規配信作成</span>
+          </Link>
+          
+          <Link 
+            to="/messages"
+            className="flex flex-col items-center p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <MessageSquare className="w-6 h-6 text-green-600 mb-2" />
+            <span className="text-xs font-medium text-green-900 text-center">メッセージ管理</span>
+          </Link>
+          
+          <Link 
+            to="/chat"
+            className="flex flex-col items-center p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <MessageSquare className="w-6 h-6 text-purple-600 mb-2" />
+            <span className="text-xs font-medium text-purple-900 text-center">チャット</span>
+          </Link>
+          
+          <Link 
+            to="/users"
+            className="flex flex-col items-center p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <Users className="w-6 h-6 text-orange-600 mb-2" />
+            <span className="text-xs font-medium text-orange-900 text-center">ユーザー管理</span>
+          </Link>
+          
+          <Link 
+            to="/analytics"
+            className="flex flex-col items-center p-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <BarChart3 className="w-6 h-6 text-indigo-600 mb-2" />
+            <span className="text-xs font-medium text-indigo-900 text-center">詳細分析</span>
+          </Link>
+          
+          <Link 
+            to="/emoji-manager"
+            className="flex flex-col items-center p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <Smile className="w-6 h-6 text-yellow-600 mb-2" />
+            <span className="text-xs font-medium text-yellow-900 text-center">絵文字管理</span>
+          </Link>
+        </div>
+      </div>
+
       {/* 主要統計カード */}
       <div className="mobile-grid mobile-grid-1 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6">
         <StatCard
@@ -226,47 +284,14 @@ const DashboardEnhanced = () => {
           </div>
         </div>
 
-        {/* クイックアクション */}
+        {/* 追加の詳細メニュー */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">クイックアクション</h3>
+            <h3 className="text-lg font-semibold text-gray-900">詳細メニュー</h3>
             <Target className="w-5 h-5 text-gray-400" />
           </div>
           
-          <div className="space-y-3">
-            <Link 
-              to="/test-broadcast"
-              className="w-full flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <Send className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium text-blue-900">新規配信作成</span>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-blue-600" />
-            </Link>
-            
-            <Link 
-              to="/emoji-manager"
-              className="w-full flex items-center justify-between p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <Smile className="w-5 h-5 text-green-600" />
-                <span className="text-sm font-medium text-green-900">絵文字管理</span>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-green-600" />
-            </Link>
-            
-            <Link 
-              to="/analytics"
-              className="w-full flex items-center justify-between p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <BarChart3 className="w-5 h-5 text-purple-600" />
-                <span className="text-sm font-medium text-purple-900">詳細分析</span>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-purple-600" />
-            </Link>
-            
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Link 
               to="/broadcast-history"
               className="w-full flex items-center justify-between p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors"
@@ -276,6 +301,17 @@ const DashboardEnhanced = () => {
                 <span className="text-sm font-medium text-orange-900">配信履歴</span>
               </div>
               <ArrowUpRight className="w-4 h-4 text-orange-600" />
+            </Link>
+            
+            <Link 
+              to="/notifications"
+              className="w-full flex items-center justify-between p-3 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+            >
+              <div className="flex items-center space-x-3">
+                <Bell className="w-5 h-5 text-red-600" />
+                <span className="text-sm font-medium text-red-900">プッシュ通知</span>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-red-600" />
             </Link>
           </div>
         </div>

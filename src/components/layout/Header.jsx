@@ -1,7 +1,7 @@
 
 // src/components/layout/Header.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Menu, Bell, Search, User, Settings, LogOut } from 'lucide-react';
+import { Menu, Bell, Search, User, Settings, LogOut, Clock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 
 const Header = ({ setSidebarOpen, showMenuButton = true }) => {
@@ -83,25 +83,40 @@ const Header = ({ setSidebarOpen, showMenuButton = true }) => {
               )}
             </button>
 
-            {/* 通知ドロップダウン */}
+            {/* 通知ドロップダウン - モバイル最適化版 */}
             {showNotifications && (
-              <div className="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                <div className="py-1">
-                  <div className="px-4 py-2 border-b border-gray-200">
-                    <h3 className="text-sm font-medium text-gray-900">通知</h3>
+              <div className="origin-top-right absolute right-0 mt-2 w-80 sm:w-96 max-w-sm rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 z-50">
+                <div className="py-2">
+                  <div className="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+                    <h3 className="text-base font-semibold text-gray-900 flex items-center">
+                      <Bell className="w-4 h-4 mr-2 text-blue-600" />
+                      通知
+                    </h3>
                   </div>
-                  {mockNotifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className={`px-4 py-3 hover:bg-gray-50 ${notification.unread ? 'bg-blue-50' : ''}`}
-                    >
-                      <p className="text-sm text-gray-900">{notification.message}</p>
-                      <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
-                    </div>
-                  ))}
-                  <div className="px-4 py-2 border-t border-gray-200">
-                    <button className="text-sm text-green-600 hover:text-green-900">
-                      すべて表示
+                  <div className="max-h-64 overflow-y-auto">
+                    {mockNotifications.map((notification) => (
+                      <div
+                        key={notification.id}
+                        className={`px-4 py-4 hover:bg-gray-50 border-b border-gray-100 transition-colors ${notification.unread ? 'bg-blue-50/50' : ''}`}
+                      >
+                        <div className="flex items-start space-x-3">
+                          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${notification.unread ? 'bg-blue-500' : 'bg-gray-300'}`}></div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 leading-relaxed whitespace-normal">
+                              {notification.message}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1 flex items-center">
+                              <Clock className="w-3 h-3 mr-1" />
+                              {notification.time}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
+                    <button className="w-full text-sm text-green-600 hover:text-green-800 font-medium py-2 hover:bg-green-50 rounded-lg transition-colors">
+                      すべての通知を表示
                     </button>
                   </div>
                 </div>
@@ -131,25 +146,26 @@ const Header = ({ setSidebarOpen, showMenuButton = true }) => {
                 )}
               </div>
               
-              {/* ユーザー情報 */}
-              <div className="ml-3 hidden md:block">
-                <div className="text-sm font-medium text-gray-900">
-                  {user?.name || user?.email?.split('@')[0] || 'ゲストユーザー'}
+              {/* ユーザー情報 - モバイル最適化 */}
+              <div className="ml-3 hidden lg:block max-w-xs">
+                <div className="text-sm font-medium text-gray-900 truncate">
+                  {user?.company || user?.name || user?.email?.split('@')[0] || 'ゲストユーザー'}
                 </div>
-                <div className="text-xs text-gray-500 flex items-center space-x-2">
-                  <span>{user?.email || 'メールアドレスなし'}</span>
-                  <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-                  <span className={`px-1.5 py-0.5 rounded-full text-xs font-medium ${
+                <div className="text-xs text-gray-500 flex items-center space-x-1">
+                  <span className="truncate max-w-24">
+                    {user?.department || user?.email || 'admin@company.com'}
+                  </span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${
                     user?.role === 'super_admin' ? 'bg-purple-100 text-purple-700' :
                     user?.role === 'admin' ? 'bg-red-100 text-red-700' :
                     user?.role === 'manager' ? 'bg-blue-100 text-blue-700' :
                     user?.role === 'operator' ? 'bg-green-100 text-green-700' :
                     'bg-gray-100 text-gray-700'
                   }`}>
-                    {user?.role === 'super_admin' ? 'スーパー管理者' :
+                    {user?.role === 'super_admin' ? 'Super' :
                      user?.role === 'admin' ? '管理者' :
-                     user?.role === 'manager' ? 'マネージャー' :
-                     user?.role === 'operator' ? 'オペレーター' : '閲覧者'}
+                     user?.role === 'manager' ? 'Manager' :
+                     user?.role === 'operator' ? 'Operator' : 'Viewer'}
                   </span>
                 </div>
               </div>

@@ -404,7 +404,7 @@ const DashboardEnhanced = () => {
                   </div>
                 ))}
               </div>
-            )}</div>
+            )}
             
             <div className="mt-4 pt-3 border-t border-gray-200">
               <Link 

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header.jsx';
+import AdminBanner from './AdminBanner.jsx';
 import Sidebar from './Sidebar.jsx';
 import MobileNavigation from '../ui/MobileNavigation.jsx';
 import MobileBottomNavigation from '../ui/MobileBottomNavigation.jsx';
@@ -13,10 +14,13 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* 管理者バナー - 最上部 */}
+      <AdminBanner />
+      
       {/* フルスクリーンメインコンテンツエリア */}
       <div className="flex flex-col min-h-screen">
-        {/* ヘッダー */}
-        <Header showMenuButton={false} />
+        {/* ヘッダー - ユーザー情報なし版 */}
+        <Header showMenuButton={false} hideUserInfo={true} />
         
         {/* ページコンテンツ - ボトムナビゲーション分のマージンを追加 */}
         <main className="flex-1 relative pb-16">

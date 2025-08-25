@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Menu, Bell, Search, User, Settings, LogOut, Clock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 
-const Header = ({ setSidebarOpen, showMenuButton = true }) => {
+const Header = ({ setSidebarOpen, showMenuButton = true, hideUserInfo = false }) => {
   const { user, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef(null);
@@ -75,8 +75,9 @@ const Header = ({ setSidebarOpen, showMenuButton = true }) => {
 
           </div>
 
-          {/* ユーザーメニュー */}
-          <div className="relative" ref={userMenuRef}>
+          {/* ユーザーメニュー - 条件付き表示 */}
+          {!hideUserInfo && (
+            <div className="relative" ref={userMenuRef}>
             <button
               className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               onClick={() => setShowUserMenu(!showUserMenu)}
@@ -206,6 +207,7 @@ const Header = ({ setSidebarOpen, showMenuButton = true }) => {
               </div>
             )}
           </div>
+          )}
         </div>
       </div>
     </div>

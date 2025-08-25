@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Users, MessageSquare, Send, TrendingUp, Eye, Clock, 
-  Smile, Star, BarChart3, Calendar, ArrowUpRight, ArrowDownRight,
-  Activity, Target, Bell, CheckCircle
+  BarChart3, Calendar, ArrowUpRight, ArrowDownRight,
+  Activity, Target, Bell, CheckCircle, Mail, MailOpen
 } from 'lucide-react';
 
 const DashboardEnhanced = () => {
@@ -20,8 +20,8 @@ const DashboardEnhanced = () => {
     },
     {
       id: 2,
-      type: 'emoji',
-      title: '🎉 絵文字が230回使用されました',
+      type: 'message',
+      title: '新しいメッセージが15件届いています',
       time: '3時間前',
       status: 'info'
     },
@@ -34,13 +34,6 @@ const DashboardEnhanced = () => {
     }
   ]);
 
-  const [popularEmojis] = useState([
-    { emoji: '😊', name: 'スマイル', count: 245 },
-    { emoji: '👍', name: 'いいね', count: 198 },
-    { emoji: '❤️', name: 'ハート', count: 187 },
-    { emoji: '🎉', name: 'お祝い', count: 156 },
-    { emoji: '🙏', name: 'お願い', count: 134 }
-  ]);
 
   const statsData = {
     '7d': {
@@ -48,8 +41,8 @@ const DashboardEnhanced = () => {
       messages: { current: 456, change: +12.5, changeType: 'increase' },
       broadcasts: { current: 12, change: +3, changeType: 'increase' },
       engagement: { current: 73.2, change: -2.1, changeType: 'decrease' },
-      emojiUsage: { current: 1234, change: +15.8, changeType: 'increase' },
-      openRate: { current: 67.8, change: +4.3, changeType: 'increase' }
+      openRate: { current: 67.8, change: +4.3, changeType: 'increase' },
+      unreadMessages: { current: 23, change: +7, changeType: 'increase' }
     }
   };
 
@@ -218,15 +211,6 @@ const DashboardEnhanced = () => {
         />
         
         <StatCard
-          title="絵文字使用回数"
-          value={currentStats.emojiUsage.current}
-          change={currentStats.emojiUsage.change}
-          changeType={currentStats.emojiUsage.changeType}
-          icon={Smile}
-          color="yellow"
-        />
-        
-        <StatCard
           title="開封率"
           value={currentStats.openRate.current}
           change={currentStats.openRate.change}
@@ -234,6 +218,15 @@ const DashboardEnhanced = () => {
           icon={Eye}
           color="indigo"
           suffix="%"
+        />
+        
+        <StatCard
+          title="未読メッセージ"
+          value={currentStats.unreadMessages.current}
+          change={currentStats.unreadMessages.change}
+          changeType={currentStats.unreadMessages.changeType}
+          icon={Mail}
+          color="red"
         />
       </div>
 
@@ -267,28 +260,56 @@ const DashboardEnhanced = () => {
           </div>
         </div>
 
-        {/* 人気絵文字ランキング */}
+        {/* 未読メッセージ詳細 */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">人気絵文字ランキング</h3>
-            <Star className="w-5 h-5 text-gray-400" />
+            <h3 className="text-lg font-semibold text-gray-900">未読メッセージ状況</h3>
+            <Mail className="w-5 h-5 text-gray-400" />
           </div>
           
-          <div className="space-y-3">
-            {popularEmojis.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <span className="text-sm font-medium text-gray-500 w-4">
-                    #{index + 1}
-                  </span>
-                  <span className="text-2xl">{item.emoji}</span>
-                  <span className="text-sm font-medium text-gray-900">{item.name}</span>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">緊急対応必要</p>
+                  <p className="text-xs text-gray-600">クレーム・重要な問い合わせ</p>
                 </div>
-                <span className="text-sm font-semibold text-gray-600">
-                  {item.count}回
-                </span>
               </div>
-            ))}
+              <span className="text-lg font-bold text-red-600">3件</span>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">通常対応</p>
+                  <p className="text-xs text-gray-600">一般的な問い合わせ</p>
+                </div>
+              </div>
+              <span className="text-lg font-bold text-yellow-600">15件</span>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">情報提供</p>
+                  <p className="text-xs text-gray-600">サービス利用案内など</p>
+                </div>
+              </div>
+              <span className="text-lg font-bold text-blue-600">5件</span>
+            </div>
+            
+            <div className="mt-4 pt-3 border-t border-gray-200">
+              <Link 
+                to="/messages"
+                className="w-full flex items-center justify-center space-x-2 p-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <MailOpen className="w-4 h-4 text-gray-600" />
+                <span className="text-sm font-medium text-gray-700">すべてのメッセージを確認</span>
+              </Link>
+            </div>
           </div>
         </div>
 

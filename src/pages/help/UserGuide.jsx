@@ -12,11 +12,19 @@ import {
 const UserGuide = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [expandedItems, setExpandedItems] = useState({});
+  const [expandedSubItems, setExpandedSubItems] = useState({});
 
   const toggleExpanded = (itemId) => {
     setExpandedItems(prev => ({
       ...prev,
       [itemId]: !prev[itemId]
+    }));
+  };
+
+  const toggleSubItem = (subItemId) => {
+    setExpandedSubItems(prev => ({
+      ...prev,
+      [subItemId]: !prev[subItemId]
     }));
   };
 
@@ -1233,13 +1241,28 @@ const UserGuide = () => {
                     {activeSection === section.id && (
                       <div className="ml-6 mt-2 space-y-1">
                         {section.items.map(item => (
-                          <button
-                            key={item.id}
-                            onClick={() => setActiveSection(item.id)}
-                            className="w-full text-left px-3 py-1 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded"
-                          >
-                            {item.title}
-                          </button>
+                          <div key={item.id}>
+                            <button
+                              onClick={() => toggleSubItem(item.id)}
+                              className="w-full text-left flex items-center justify-between px-3 py-1 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded"
+                            >
+                              <span>{item.title}</span>
+                              {expandedSubItems[item.id] ? (
+                                <ChevronDown className="h-3 w-3" />
+                              ) : (
+                                <ChevronRight className="h-3 w-3" />
+                              )}
+                            </button>
+                            
+                            {/* サブアイテムの詳細内容を直下に表示 */}
+                            {expandedSubItems[item.id] && content[item.id] && (
+                              <div className="ml-4 mt-2 p-3 bg-gray-50 border-l-2 border-blue-300 rounded">
+                                <div className="text-xs text-gray-700">
+                                  {content[item.id].content}
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         ))}
                       </div>
                     )}
@@ -1253,7 +1276,8 @@ const UserGuide = () => {
         {/* メインコンテンツ */}
         <div className="flex-1">
           <div className="bg-white rounded-lg border border-gray-200 p-8">
-            {content[activeSection] ? (
+            {/* セクションメインコンテンツのみ表示（サブアイテムは左サイドバーで表示） */}
+            {content[activeSection] && sections.some(section => section.id === activeSection) ? (
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   {content[activeSection].title}
@@ -1264,10 +1288,11 @@ const UserGuide = () => {
               <div className="text-center py-12">
                 <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  コンテンツが見つかりません
+                  詳細表示
                 </h3>
                 <p className="text-gray-500">
-                  左側の目次から項目を選択してください。
+                  左側のメニューから項目を選択してください。<br />
+                  詳細項目をクリックすると、その項目の直下に説明が表示されます。
                 </p>
               </div>
             )}

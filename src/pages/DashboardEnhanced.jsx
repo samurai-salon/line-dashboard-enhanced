@@ -34,7 +34,6 @@ const DashboardEnhanced = () => {
     }
   ]);
 
-
   const statsData = {
     '7d': {
       followers: { current: 4090, change: +8.2, changeType: 'increase' },
@@ -151,14 +150,6 @@ const DashboardEnhanced = () => {
           >
             <BarChart3 className="w-6 h-6 text-indigo-600 mb-2" />
             <span className="text-xs font-medium text-indigo-900 text-center">詳細分析</span>
-          </Link>
-          
-          <Link 
-            to="/emoji-manager"
-            className="flex flex-col items-center p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-colors mobile-touch-target"
-          >
-            <Smile className="w-6 h-6 text-yellow-600 mb-2" />
-            <span className="text-xs font-medium text-yellow-900 text-center">絵文字管理</span>
           </Link>
           
           <Link 

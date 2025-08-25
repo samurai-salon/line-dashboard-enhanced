@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import {
   Send, Users, Target, Clock, Eye, Edit3, Trash2, Plus, Search,
-  Filter, Calendar, CheckCircle, XCircle, AlertTriangle,
-  MessageSquare, User, FileText, Image, Video, Mic, MapPin, Settings,
-  Upload, Save, Copy, FolderOpen, BookOpen
+  CheckCircle, XCircle,
+  MessageSquare, User, FileText, Image, Video, Mic,
+  Save, Copy, BookOpen
 } from 'lucide-react';
 import MessageInputWithEmoji from '../../components/emoji/MessageInputWithEmoji';
 

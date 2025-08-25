@@ -134,7 +134,7 @@ const DashboardEnhanced = () => {
           <Target className="w-5 h-5 text-gray-400" />
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
           <Link 
             to="/test-broadcast"
             className="flex flex-col items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors mobile-touch-target"
@@ -182,6 +182,166 @@ const DashboardEnhanced = () => {
             <Bell className="w-6 h-6 text-red-600 mb-2" />
             <span className="text-xs font-medium text-red-900 text-center">通知確認</span>
           </Link>
+          
+          <Link 
+            to="/broadcast-history"
+            className="flex flex-col items-center p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <Clock className="w-6 h-6 text-orange-600 mb-2" />
+            <span className="text-xs font-medium text-orange-900 text-center">配信履歴</span>
+          </Link>
+          
+          <Link 
+            to="/notifications"
+            className="flex flex-col items-center p-3 bg-pink-50 hover:bg-pink-100 rounded-lg transition-colors mobile-touch-target"
+          >
+            <Bell className="w-6 h-6 text-pink-600 mb-2" />
+            <span className="text-xs font-medium text-pink-900 text-center">プッシュ通知</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* 未読メッセージ状況 - クイックアクションの下に移動 */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">未読メッセージ状況</h3>
+          <Mail className="w-5 h-5 text-gray-400" />
+        </div>
+        
+        <div className="space-y-4">
+          <div 
+            className="flex items-center justify-between p-3 bg-red-50 hover:bg-red-100 rounded-lg cursor-pointer transition-colors"
+            onClick={() => handleCategoryClick('urgent')}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">緊急対応必要</p>
+                <p className="text-xs text-gray-600">クレーム・重要な問い合わせ</p>
+              </div>
+            </div>
+            <span className="text-lg font-bold text-red-600">3件</span>
+          </div>
+          
+          {selectedMessageCategory === 'urgent' && (
+            <div className="ml-4 space-y-2 border-l-2 border-red-200 pl-4">
+              {unreadMessages.urgent.map(message => (
+                <div key={message.id} className="p-3 bg-white border border-red-200 rounded-lg">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-900">{message.sender}</p>
+                      <p className="text-sm text-gray-600 mt-1">{message.preview}</p>
+                    </div>
+                    <span className="text-xs text-gray-500 ml-2">{message.time}</span>
+                  </div>
+                  <div className="mt-2 flex space-x-2">
+                    <button className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">
+                      返信
+                    </button>
+                    <button className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                      詳細
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <div 
+            className="flex items-center justify-between p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg cursor-pointer transition-colors"
+            onClick={() => handleCategoryClick('normal')}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">通常対応</p>
+                <p className="text-xs text-gray-600">一般的な問い合わせ</p>
+              </div>
+            </div>
+            <span className="text-lg font-bold text-yellow-600">15件</span>
+          </div>
+          
+          {selectedMessageCategory === 'normal' && (
+            <div className="ml-4 space-y-2 border-l-2 border-yellow-200 pl-4">
+              {unreadMessages.normal.slice(0, 3).map(message => (
+                <div key={message.id} className="p-3 bg-white border border-yellow-200 rounded-lg">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-900">{message.sender}</p>
+                      <p className="text-sm text-gray-600 mt-1">{message.preview}</p>
+                    </div>
+                    <span className="text-xs text-gray-500 ml-2">{message.time}</span>
+                  </div>
+                  <div className="mt-2 flex space-x-2">
+                    <button className="px-3 py-1 text-xs bg-yellow-600 text-white rounded hover:bg-yellow-700">
+                      返信
+                    </button>
+                    <button className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                      詳細
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {unreadMessages.normal.length > 3 && (
+                <div className="text-center py-2">
+                  <Link 
+                    to="/messages?filter=normal"
+                    className="text-sm text-yellow-600 hover:text-yellow-700 underline"
+                  >
+                    残り{unreadMessages.normal.length - 3}件を表示
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+          
+          <div 
+            className="flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors"
+            onClick={() => handleCategoryClick('info')}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">情報提供</p>
+                <p className="text-xs text-gray-600">サービス利用案内など</p>
+              </div>
+            </div>
+            <span className="text-lg font-bold text-blue-600">5件</span>
+          </div>
+          
+          {selectedMessageCategory === 'info' && (
+            <div className="ml-4 space-y-2 border-l-2 border-blue-200 pl-4">
+              {unreadMessages.info.map(message => (
+                <div key={message.id} className="p-3 bg-white border border-blue-200 rounded-lg">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-900">{message.sender}</p>
+                      <p className="text-sm text-gray-600 mt-1">{message.preview}</p>
+                    </div>
+                    <span className="text-xs text-gray-500 ml-2">{message.time}</span>
+                  </div>
+                  <div className="mt-2 flex space-x-2">
+                    <button className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700">
+                      返信
+                    </button>
+                    <button className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                      詳細
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <div className="mt-4 pt-3 border-t border-gray-200">
+            <Link 
+              to="/messages"
+              className="w-full flex items-center justify-center space-x-2 p-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <MailOpen className="w-4 h-4 text-gray-600" />
+              <span className="text-sm font-medium text-gray-700">すべてのメッセージを確認</span>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -245,7 +405,7 @@ const DashboardEnhanced = () => {
       </div>
 
       {/* 詳細統計エリア */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         {/* 最近のアクティビティ */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-4">
@@ -271,182 +431,6 @@ const DashboardEnhanced = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* 未読メッセージ詳細 */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">未読メッセージ状況</h3>
-            <Mail className="w-5 h-5 text-gray-400" />
-          </div>
-          
-          <div className="space-y-4">
-            <div 
-              className="flex items-center justify-between p-3 bg-red-50 hover:bg-red-100 rounded-lg cursor-pointer transition-colors"
-              onClick={() => handleCategoryClick('urgent')}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">緊急対応必要</p>
-                  <p className="text-xs text-gray-600">クレーム・重要な問い合わせ</p>
-                </div>
-              </div>
-              <span className="text-lg font-bold text-red-600">3件</span>
-            </div>
-            
-            {selectedMessageCategory === 'urgent' && (
-              <div className="ml-4 space-y-2 border-l-2 border-red-200 pl-4">
-                {unreadMessages.urgent.map(message => (
-                  <div key={message.id} className="p-3 bg-white border border-red-200 rounded-lg">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">{message.sender}</p>
-                        <p className="text-sm text-gray-600 mt-1">{message.preview}</p>
-                      </div>
-                      <span className="text-xs text-gray-500 ml-2">{message.time}</span>
-                    </div>
-                    <div className="mt-2 flex space-x-2">
-                      <button className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">
-                        返信
-                      </button>
-                      <button className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-                        詳細
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            
-            <div 
-              className="flex items-center justify-between p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg cursor-pointer transition-colors"
-              onClick={() => handleCategoryClick('normal')}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">通常対応</p>
-                  <p className="text-xs text-gray-600">一般的な問い合わせ</p>
-                </div>
-              </div>
-              <span className="text-lg font-bold text-yellow-600">15件</span>
-            </div>
-            
-            {selectedMessageCategory === 'normal' && (
-              <div className="ml-4 space-y-2 border-l-2 border-yellow-200 pl-4">
-                {unreadMessages.normal.slice(0, 3).map(message => (
-                  <div key={message.id} className="p-3 bg-white border border-yellow-200 rounded-lg">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">{message.sender}</p>
-                        <p className="text-sm text-gray-600 mt-1">{message.preview}</p>
-                      </div>
-                      <span className="text-xs text-gray-500 ml-2">{message.time}</span>
-                    </div>
-                    <div className="mt-2 flex space-x-2">
-                      <button className="px-3 py-1 text-xs bg-yellow-600 text-white rounded hover:bg-yellow-700">
-                        返信
-                      </button>
-                      <button className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-                        詳細
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                {unreadMessages.normal.length > 3 && (
-                  <div className="text-center py-2">
-                    <Link 
-                      to="/messages?filter=normal"
-                      className="text-sm text-yellow-600 hover:text-yellow-700 underline"
-                    >
-                      残り{unreadMessages.normal.length - 3}件を表示
-                    </Link>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            <div 
-              className="flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors"
-              onClick={() => handleCategoryClick('info')}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">情報提供</p>
-                  <p className="text-xs text-gray-600">サービス利用案内など</p>
-                </div>
-              </div>
-              <span className="text-lg font-bold text-blue-600">5件</span>
-            </div>
-            
-            {selectedMessageCategory === 'info' && (
-              <div className="ml-4 space-y-2 border-l-2 border-blue-200 pl-4">
-                {unreadMessages.info.map(message => (
-                  <div key={message.id} className="p-3 bg-white border border-blue-200 rounded-lg">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">{message.sender}</p>
-                        <p className="text-sm text-gray-600 mt-1">{message.preview}</p>
-                      </div>
-                      <span className="text-xs text-gray-500 ml-2">{message.time}</span>
-                    </div>
-                    <div className="mt-2 flex space-x-2">
-                      <button className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700">
-                        返信
-                      </button>
-                      <button className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-                        詳細
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            
-            <div className="mt-4 pt-3 border-t border-gray-200">
-              <Link 
-                to="/messages"
-                className="w-full flex items-center justify-center space-x-2 p-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <MailOpen className="w-4 h-4 text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">すべてのメッセージを確認</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* 追加の詳細メニュー */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">詳細メニュー</h3>
-            <Target className="w-5 h-5 text-gray-400" />
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Link 
-              to="/broadcast-history"
-              className="w-full flex items-center justify-between p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <Clock className="w-5 h-5 text-orange-600" />
-                <span className="text-sm font-medium text-orange-900">配信履歴</span>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-orange-600" />
-            </Link>
-            
-            <Link 
-              to="/notifications"
-              className="w-full flex items-center justify-between p-3 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <Bell className="w-5 h-5 text-red-600" />
-                <span className="text-sm font-medium text-red-900">プッシュ通知</span>
-              </div>
-              <ArrowUpRight className="w-4 h-4 text-red-600" />
-            </Link>
           </div>
         </div>
       </div>

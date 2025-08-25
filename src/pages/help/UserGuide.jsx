@@ -1256,8 +1256,11 @@ const UserGuide = () => {
                             
                             {/* サブアイテムの詳細内容を直下に表示 */}
                             {expandedSubItems[item.id] && content[item.id] && (
-                              <div className="ml-4 mt-2 p-3 bg-gray-50 border-l-2 border-blue-300 rounded">
-                                <div className="text-xs text-gray-700">
+                              <div className="ml-2 mt-2 p-4 bg-blue-50 border border-blue-200 rounded-lg shadow-sm">
+                                <h4 className="text-sm font-medium text-blue-900 mb-2">
+                                  {content[item.id].title}
+                                </h4>
+                                <div className="text-xs text-blue-800 max-h-64 overflow-y-auto">
                                   {content[item.id].content}
                                 </div>
                               </div>
@@ -1273,29 +1276,44 @@ const UserGuide = () => {
           </div>
         </div>
 
-        {/* メインコンテンツ */}
+        {/* メインコンテンツ - 使い方の説明 */}
         <div className="flex-1">
           <div className="bg-white rounded-lg border border-gray-200 p-8">
-            {/* セクションメインコンテンツのみ表示（サブアイテムは左サイドバーで表示） */}
-            {content[activeSection] && sections.some(section => section.id === activeSection) ? (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  {content[activeSection].title}
-                </h2>
-                {content[activeSection].content}
+            <div className="text-center py-12">
+              <BookOpen className="h-16 w-16 text-blue-500 mx-auto mb-6" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                ヘルプページの使い方
+              </h2>
+              <div className="max-w-md mx-auto text-left space-y-4 text-gray-600">
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-blue-600 text-sm font-bold">1</span>
+                  </div>
+                  <p className="text-sm">左側のメニューからカテゴリを選択してください</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-blue-600 text-sm font-bold">2</span>
+                  </div>
+                  <p className="text-sm">詳細項目をクリックすると、その項目の直下に説明文が表示されます</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-blue-600 text-sm font-bold">3</span>
+                  </div>
+                  <p className="text-sm">もう一度クリックすると説明文が閉じます</p>
+                </div>
               </div>
-            ) : (
-              <div className="text-center py-12">
-                <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  詳細表示
-                </h3>
-                <p className="text-gray-500">
-                  左側のメニューから項目を選択してください。<br />
-                  詳細項目をクリックすると、その項目の直下に説明が表示されます。
+              <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg max-w-md mx-auto">
+                <div className="flex items-center space-x-2 text-green-700">
+                  <CheckCircle className="h-5 w-5" />
+                  <span className="text-sm font-medium">新しいUI体験</span>
+                </div>
+                <p className="text-sm text-green-600 mt-2">
+                  詳細情報がクリックした項目の近くに表示されるため、より直感的に情報を確認できます。
                 </p>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

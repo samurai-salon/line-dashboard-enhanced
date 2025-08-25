@@ -405,8 +405,8 @@ const DashboardEnhanced = () => {
       </div>
 
       {/* 詳細統計エリア */}
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-        {/* 最近のアクティビティ */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* 最近のアクティビティ - 拡張版 */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">最近のアクティビティ</h3>
@@ -415,64 +415,114 @@ const DashboardEnhanced = () => {
           
           <div className="space-y-4">
             {recentActivity.map((activity) => (
-              <div key={activity.id} className="flex items-start space-x-3">
-                <div className={`w-2 h-2 rounded-full mt-2 ${
+              <div key={activity.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className={`w-3 h-3 rounded-full mt-2 ${
                   activity.status === 'completed' ? 'bg-green-400' :
                   activity.status === 'info' ? 'bg-blue-400' : 'bg-yellow-400'
                 }`} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900">{activity.title}</p>
-                  <p className="text-xs text-gray-500">{activity.time}</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-gray-900">{activity.title}</p>
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      activity.status === 'completed' ? 'bg-green-100 text-green-800' :
+                      activity.status === 'info' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {activity.status === 'completed' ? '完了' :
+                       activity.status === 'info' ? '情報' : '進行中'}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
                   {activity.recipients && (
-                    <p className="text-xs text-gray-600 mt-1">
-                      {activity.recipients.toLocaleString()}人に配信 • 開封率{activity.openRate}%
-                    </p>
+                    <div className="flex items-center justify-between mt-2">
+                      <p className="text-xs text-gray-600">
+                        {activity.recipients.toLocaleString()}人に配信
+                      </p>
+                      <p className="text-xs font-medium text-green-600">
+                        開封率 {activity.openRate}%
+                      </p>
+                    </div>
                   )}
                 </div>
               </div>
             ))}
+            
+            {/* 追加のアクティビティ情報 */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <p className="text-lg font-bold text-blue-600">8</p>
+                  <p className="text-xs text-gray-600">今日の配信</p>
+                </div>
+                <div>
+                  <p className="text-lg font-bold text-green-600">156</p>
+                  <p className="text-xs text-gray-600">今日の受信</p>
+                </div>
+                <div>
+                  <p className="text-lg font-bold text-orange-600">23</p>
+                  <p className="text-xs text-gray-600">未対応</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* 配信パフォーマンスチャート風表示 */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">配信パフォーマンス概要</h3>
-          <Calendar className="w-5 h-5 text-gray-400" />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Send className="w-8 h-8 text-blue-600" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900">12</p>
-            <p className="text-sm text-gray-600">総配信数</p>
+        {/* 配信パフォーマンス概要 - 2列表示 */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">配信パフォーマンス概要</h3>
+            <Calendar className="w-5 h-5 text-gray-400" />
           </div>
           
-          <div className="text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <CheckCircle className="w-8 h-8 text-green-600" />
+          <div className="grid grid-cols-2 gap-6">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Send className="w-8 h-8 text-blue-600" />
+              </div>
+              <p className="text-2xl font-bold text-gray-900">12</p>
+              <p className="text-sm text-gray-600">総配信数</p>
             </div>
-            <p className="text-2xl font-bold text-gray-900">11</p>
-            <p className="text-sm text-gray-600">成功配信</p>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="w-8 h-8 text-green-600" />
+              </div>
+              <p className="text-2xl font-bold text-gray-900">11</p>
+              <p className="text-sm text-gray-600">成功配信</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Eye className="w-8 h-8 text-yellow-600" />
+              </div>
+              <p className="text-2xl font-bold text-gray-900">67.8%</p>
+              <p className="text-sm text-gray-600">平均開封率</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Users className="w-8 h-8 text-purple-600" />
+              </div>
+              <p className="text-2xl font-bold text-gray-900">4,090</p>
+              <p className="text-sm text-gray-600">総リーチ数</p>
+            </div>
           </div>
           
-          <div className="text-center">
-            <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Eye className="w-8 h-8 text-yellow-600" />
+          {/* パフォーマンス詳細情報 */}
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">平均応答時間</span>
+                <span className="text-sm font-medium text-gray-900">2.3分</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">最も活発な時間帯</span>
+                <span className="text-sm font-medium text-gray-900">14:00-16:00</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">今週の成長率</span>
+                <span className="text-sm font-medium text-green-600">+8.2%</span>
+              </div>
             </div>
-            <p className="text-2xl font-bold text-gray-900">67.8%</p>
-            <p className="text-sm text-gray-600">平均開封率</p>
-          </div>
-          
-          <div className="text-center">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Users className="w-8 h-8 text-purple-600" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900">4,090</p>
-            <p className="text-sm text-gray-600">総リーチ数</p>
           </div>
         </div>
       </div>

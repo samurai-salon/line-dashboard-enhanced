@@ -62,50 +62,53 @@ const AdminBanner = () => {
 
   return (
     <div className="relative">
-      {/* 管理者バナー */}
+      {/* 管理者バナー - 案2: コンパクト統合レイアウト */}
       <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-3">
-            {/* 会社情報 */}
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                <span className="text-white font-bold text-lg">S</span>
-              </div>
-              <div>
-                <h1 className="text-lg font-bold">Samurai Arc.株式会社</h1>
-                <p className="text-blue-100 text-sm">LINE管理システム</p>
+          <div className="py-4">
+            {/* 第1行: 会社名 | システム名 */}
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                  <span className="text-white font-bold">S</span>
+                </div>
+                <h1 className="text-base md:text-lg font-bold flex items-center space-x-2 md:space-x-3">
+                  <span>Samurai Arc.株式会社</span>
+                  <span className="text-blue-200">|</span>
+                  <span className="text-blue-100 font-medium text-sm md:text-base">LINE管理システム</span>
+                </h1>
               </div>
             </div>
 
-            {/* ユーザー情報とドロップダウン */}
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setShowDropdown(!showDropdown)}
-                className="flex items-center space-x-3 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm"
-              >
-                {/* アバター */}
-                <div className={`w-8 h-8 ${roleInfo.bgColor} rounded-lg flex items-center justify-center shadow-sm`}>
-                  <span className="text-white font-semibold text-sm">
-                    {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                  </span>
-                </div>
-
-                {/* ユーザー情報 */}
-                <div className="text-left hidden sm:block">
-                  <div className="text-sm font-medium">
-                    {user?.name || user?.email?.split('@')[0] || '管理者'}
+            {/* 第2行: ユーザー情報 */}
+            <div className="flex items-center justify-between">
+              <div className="flex-1"></div>
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="flex items-center space-x-3 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm"
+                >
+                  {/* アバター */}
+                  <div className={`w-7 h-7 ${roleInfo.bgColor} rounded-lg flex items-center justify-center shadow-sm`}>
+                    <span className="text-white font-semibold text-xs">
+                      {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </span>
                   </div>
-                  <div className="text-xs text-blue-100 flex items-center space-x-2">
-                    <RoleIcon className="w-3 h-3" />
-                    <span>{roleInfo.label}</span>
-                  </div>
-                </div>
 
-                {/* 展開アイコン */}
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${
-                  showDropdown ? 'transform rotate-180' : ''
-                }`} />
-              </button>
+                  {/* ユーザー情報 */}
+                  <div className="text-left">
+                    <div className="text-xs md:text-sm font-medium flex items-center space-x-1 md:space-x-2">
+                      <span className="hidden sm:inline">{user?.name || user?.email?.split('@')[0] || '管理者'}</span>
+                      <span className="hidden sm:inline text-blue-200">-</span>
+                      <span className="text-blue-100">{roleInfo.label}</span>
+                    </div>
+                  </div>
+
+                  {/* 展開アイコン */}
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${
+                    showDropdown ? 'transform rotate-180' : ''
+                  }`} />
+                </button>
 
               {/* ドロップダウンメニュー */}
               {showDropdown && (
@@ -163,6 +166,7 @@ const AdminBanner = () => {
                   </div>
                 </div>
               )}
+              </div>
             </div>
           </div>
         </div>

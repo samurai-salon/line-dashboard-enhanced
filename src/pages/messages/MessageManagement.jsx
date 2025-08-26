@@ -161,12 +161,14 @@ const MessageManagement = () => {
   };
 
   const handleQuickReply = (reply) => {
-    setPreviousReplyText(replyText); // 現在のテキストを保存
-    setReplyText(reply);
+    if (replyText !== reply) { // 同じ内容でない場合のみ
+      setPreviousReplyText(replyText); // 現在のテキストを保存
+      setReplyText(reply);
+    }
   };
 
-  const handleUndoQuickReply = () => {
-    setReplyText(previousReplyText);
+  const handleClearReply = () => {
+    setReplyText('');
     setPreviousReplyText('');
   };
 
@@ -327,7 +329,7 @@ const MessageManagement = () => {
               </div>
 
               {/* メッセージ内容 */}
-              <div className="flex-1 bg-gray-50 p-4 overflow-y-auto">
+              <div className="flex-1 bg-gray-50 p-2 overflow-y-auto">
                 <div className="bg-white rounded-lg p-3 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-gray-500">
@@ -365,17 +367,17 @@ const MessageManagement = () => {
               </div>
 
               {/* 返信エリア */}
-              <div className="bg-white border-t border-gray-200 p-4">
+              <div className="bg-white border-t border-gray-200 p-3">
                 {/* 返信入力 - 上に移動 */}
-                <div className="relative mb-4">
+                <div className="relative mb-3">
                   <textarea
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     placeholder="メッセージを入力してください..."
-                    className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    rows="3"
+                    className="w-full p-2 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    rows="2"
                   />
-                  <div className="flex items-center justify-between mt-3">
+                  <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center space-x-2">
                       <button className="p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
                         <Paperclip className="h-4 w-4" />
@@ -383,12 +385,12 @@ const MessageManagement = () => {
                       <button className="p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
                         <Smile className="h-4 w-4" />
                       </button>
-                      {previousReplyText && (
+                      {replyText.trim() && (
                         <button
-                          onClick={handleUndoQuickReply}
-                          className="px-2 py-1 text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-full transition-colors"
+                          onClick={handleClearReply}
+                          className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
                         >
-                          元に戻す
+                          クリア
                         </button>
                       )}
                     </div>

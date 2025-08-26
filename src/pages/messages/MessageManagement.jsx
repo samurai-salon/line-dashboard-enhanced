@@ -27,6 +27,7 @@ const MessageManagement = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [replyText, setReplyText] = useState('');
+  const [previousReplyText, setPreviousReplyText] = useState('');
 
   // サンプルメッセージデータ
   const messages = [
@@ -36,6 +37,7 @@ const MessageManagement = () => {
         name: '田中太郎',
         avatar: null,
         userId: 'U1234567890',
+        officialAccount: 'サムライアーク株式会社',
         isVip: false
       },
       content: '新商品について詳しく教えてください。価格と機能について知りたいです。',
@@ -52,6 +54,7 @@ const MessageManagement = () => {
         name: '佐藤花子',
         avatar: null,
         userId: 'U0987654321',
+        officialAccount: 'サムライアーク株式会社',
         isVip: true
       },
       content: '配送が遅れているようですが、いつ頃到着予定でしょうか？',
@@ -68,6 +71,7 @@ const MessageManagement = () => {
         name: '鈴木次郎',
         avatar: null,
         userId: 'U1122334455',
+        officialAccount: 'テスト企業アカウント',
         isVip: false
       },
       content: '返品したいのですが、手続きを教えてください。',
@@ -84,6 +88,7 @@ const MessageManagement = () => {
         name: '山田美咲',
         avatar: null,
         userId: 'U5566778899',
+        officialAccount: 'サムライアーク株式会社',
         isVip: false
       },
       content: '商品の使い方について教えてください。',
@@ -156,7 +161,13 @@ const MessageManagement = () => {
   };
 
   const handleQuickReply = (reply) => {
+    setPreviousReplyText(replyText); // 現在のテキストを保存
     setReplyText(reply);
+  };
+
+  const handleUndoQuickReply = () => {
+    setReplyText(previousReplyText);
+    setPreviousReplyText('');
   };
 
   return (
@@ -166,15 +177,15 @@ const MessageManagement = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-blue-100 rounded-lg">
-              <MessageSquare className="h-6 w-6 text-blue-600" />
+              <MessageSquare className="h-5 w-5 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">メッセージ管理</h1>
-              <p className="text-sm text-gray-600">受信メッセージの確認と返信</p>
+              <h1 className="text-lg font-semibold text-gray-900">メッセージ管理</h1>
+              <p className="text-xs text-gray-600">受信メッセージの確認と返信</p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <span className="text-sm text-gray-500">
+            <span className="text-xs text-gray-500">
               {filteredMessages.filter(m => m.status === 'unread').length}件未読
             </span>
           </div>
@@ -230,23 +241,28 @@ const MessageManagement = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center space-x-2">
-                        <h3 className="text-sm font-medium text-gray-900 truncate">
+                        <h3 className="text-xs font-medium text-gray-900 truncate">
                           {message.sender.name}
                         </h3>
                         {message.sender.isVip && (
-                          <Star className="h-4 w-4 text-yellow-500" />
+                          <Star className="h-3 w-3 text-yellow-500" />
                         )}
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(message.status)}`}>
+                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(message.status)}`}>
                           {message.status === 'unread' ? '未読' :
                            message.status === 'read' ? '既読' : '返信済み'}
                         </span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <AlertCircle className={`h-4 w-4 ${getPriorityColor(message.priority)}`} />
+                        <AlertCircle className={`h-3 w-3 ${getPriorityColor(message.priority)}`} />
                         <span className="text-xs text-gray-500">{formatTime(message.timestamp)}</span>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                    <div className="mb-1">
+                      <p className="text-xs text-gray-500 truncate">
+                        ID: {message.sender.userId} | {message.sender.officialAccount}
+                      </p>
+                    </div>
+                    <p className="text-xs text-gray-600 line-clamp-2 mb-2">
                       {message.content}
                     </p>
                     <div className="flex items-center justify-between">
@@ -279,17 +295,20 @@ const MessageManagement = () => {
               <div className="bg-white border-b border-gray-200 p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <span className="text-white font-semibold">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-semibold">
                         {selectedMessage.sender.name.charAt(0)}
                       </span>
                     </div>
                     <div>
-                      <h2 className="text-lg font-semibold text-gray-900">
+                      <h2 className="text-sm font-semibold text-gray-900">
                         {selectedMessage.sender.name}
                       </h2>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs text-gray-500">
                         ID: {selectedMessage.sender.userId}
+                      </p>
+                      <p className="text-xs text-blue-600 font-medium">
+                        {selectedMessage.sender.officialAccount}
                       </p>
                     </div>
                   </div>
@@ -309,12 +328,12 @@ const MessageManagement = () => {
 
               {/* メッセージ内容 */}
               <div className="flex-1 bg-gray-50 p-4 overflow-y-auto">
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                  <div className="flex items-center justify-between mb-3">
+                <div className="bg-white rounded-lg p-3 shadow-sm">
+                  <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-gray-500">
                       {formatTime(selectedMessage.timestamp)}
                     </span>
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                       selectedMessage.priority === 'urgent' ? 'bg-red-100 text-red-800' :
                       selectedMessage.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
                       'bg-gray-100 text-gray-800'
@@ -323,7 +342,7 @@ const MessageManagement = () => {
                        selectedMessage.priority === 'normal' ? '通常' : '低'}
                     </span>
                   </div>
-                  <p className="text-gray-900 leading-relaxed">
+                  <p className="text-sm text-gray-900 leading-relaxed">
                     {selectedMessage.content}
                   </p>
                   <div className="mt-4 flex items-center justify-between">
@@ -347,48 +366,56 @@ const MessageManagement = () => {
 
               {/* 返信エリア */}
               <div className="bg-white border-t border-gray-200 p-4">
-                {/* クイックリプライ */}
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">クイックリプライ</h4>
+                {/* 返信入力 - 上に移動 */}
+                <div className="relative mb-4">
+                  <textarea
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    placeholder="メッセージを入力してください..."
+                    className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    rows="3"
+                  />
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center space-x-2">
+                      <button className="p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
+                        <Paperclip className="h-4 w-4" />
+                      </button>
+                      <button className="p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
+                        <Smile className="h-4 w-4" />
+                      </button>
+                      {previousReplyText && (
+                        <button
+                          onClick={handleUndoQuickReply}
+                          className="px-2 py-1 text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-full transition-colors"
+                        >
+                          元に戻す
+                        </button>
+                      )}
+                    </div>
+                    <button
+                      onClick={handleSendReply}
+                      disabled={!replyText.trim()}
+                      className="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Send className="h-3 w-3 mr-1" />
+                      送信
+                    </button>
+                  </div>
+                </div>
+
+                {/* クイックリプライ - 下に移動 */}
+                <div>
+                  <h4 className="text-xs font-medium text-gray-700 mb-2">クイックリプライ</h4>
                   <div className="flex flex-wrap gap-2">
                     {quickReplies.map((reply, index) => (
                       <button
                         key={index}
                         onClick={() => handleQuickReply(reply)}
-                        className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+                        className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
                       >
                         {reply}
                       </button>
                     ))}
-                  </div>
-                </div>
-
-                {/* 返信入力 */}
-                <div className="relative">
-                  <textarea
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    placeholder="メッセージを入力してください..."
-                    className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    rows="3"
-                  />
-                  <div className="flex items-center justify-between mt-3">
-                    <div className="flex items-center space-x-2">
-                      <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-                        <Paperclip className="h-4 w-4" />
-                      </button>
-                      <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-                        <Smile className="h-4 w-4" />
-                      </button>
-                    </div>
-                    <button
-                      onClick={handleSendReply}
-                      disabled={!replyText.trim()}
-                      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Send className="h-4 w-4 mr-2" />
-                      送信
-                    </button>
                   </div>
                 </div>
               </div>
@@ -396,11 +423,11 @@ const MessageManagement = () => {
           ) : (
             <div className="flex-1 flex items-center justify-center bg-gray-50">
               <div className="text-center">
-                <MessageSquare className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                <h3 className="text-sm font-medium text-gray-900 mb-2">
                   メッセージを選択してください
                 </h3>
-                <p className="text-gray-500">
+                <p className="text-xs text-gray-500 max-w-xs">
                   左側のリストからメッセージを選択すると、詳細と返信フォームが表示されます。
                 </p>
               </div>

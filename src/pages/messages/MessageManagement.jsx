@@ -1,5 +1,5 @@
 // src/pages/messages/MessageManagement.jsx - 2パネル式メッセージ管理
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   MessageSquare, 
   Search, 
@@ -28,6 +28,20 @@ const MessageManagement = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [replyText, setReplyText] = useState('');
   const [previousReplyText, setPreviousReplyText] = useState('');
+  const [showTemplateMenu, setShowTemplateMenu] = useState(false);
+  const [showFileMenu, setShowFileMenu] = useState(false);
+  const templateMenuRef = useRef(null);
+
+  // メニュー外クリックで閉じる
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (templateMenuRef.current && !templateMenuRef.current.contains(event.target)) {
+        setShowTemplateMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // サンプルメッセージデータ
   const messages = [
@@ -109,6 +123,13 @@ const MessageManagement = () => {
     "恐れ入りますが、もう少しお待ちください。"
   ];
 
+  const messageTemplates = [
+    { id: 1, name: "商品問い合わせ返答", content: "商品についてお問い合わせいただき、ありがとうございます。詳細については担当者より後程ご連絡いたします。" },
+    { id: 2, name: "配送確認", content: "配送状況についてお調べいたします。お客様の注文番号をお教えいただけますでしょうか。" },
+    { id: 3, name: "返品対応", content: "返品をご希望の場合は、購入日から30日以内であれば承っております。返品手順をご案内いたします。" },
+    { id: 4, name: "営業時間案内", content: "営業時間は平日9:00-18:00となっております。お急ぎの場合は緊急連絡先までご連絡ください。" }
+  ];
+
   const filteredMessages = messages.filter(message => {
     const matchesSearch = message.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          message.sender.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -170,6 +191,27 @@ const MessageManagement = () => {
   const handleClearReply = () => {
     setReplyText('');
     setPreviousReplyText('');
+  };
+
+  const handleTemplateSelect = (template) => {
+    setPreviousReplyText(replyText);
+    setReplyText(template.content);
+    setShowTemplateMenu(false);
+  };
+
+  const handleFileUpload = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*,application/pdf,.doc,.docx';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        console.log('File selected:', file.name);
+        // ここで実際のファイルアップロード処理
+      }
+    };
+    input.click();
+    setShowFileMenu(false);
   };
 
   return (
@@ -293,73 +335,53 @@ const MessageManagement = () => {
         <div className="w-1/2 flex flex-col">
           {selectedMessage ? (
             <>
-              {/* メッセージ詳細ヘッダー */}
-              <div className="bg-white border-b border-gray-200 px-4 py-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-semibold">
-                        {selectedMessage.sender.name.charAt(0)}
+              {/* 統合されたメッセージ表示エリア */}
+              <div className="flex-1 bg-white flex flex-col">
+                {/* ユーザー情報ヘッダー - コンパクト */}
+                <div className="border-b border-gray-200 px-3 py-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <span className="text-white text-xs font-semibold">
+                          {selectedMessage.sender.name.charAt(0)}
+                        </span>
+                      </div>
+                      <div>
+                        <h3 className="text-xs font-semibold text-gray-900">{selectedMessage.sender.name}</h3>
+                        <p className="text-xs text-blue-600">{selectedMessage.sender.officialAccount}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <span className={`px-1.5 py-0.5 rounded-full text-xs font-medium ${
+                        selectedMessage.priority === 'urgent' ? 'bg-red-100 text-red-800' :
+                        selectedMessage.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {selectedMessage.priority === 'urgent' ? '緊急' : selectedMessage.priority === 'normal' ? '通常' : '低'}
                       </span>
+                      <span className="text-xs text-gray-500">{formatTime(selectedMessage.timestamp)}</span>
                     </div>
-                    <div>
-                      <h2 className="text-sm font-semibold text-gray-900">
-                        {selectedMessage.sender.name}
-                      </h2>
-                      <p className="text-xs text-gray-500">
-                        ID: {selectedMessage.sender.userId}
-                      </p>
-                      <p className="text-xs text-blue-600 font-medium">
-                        {selectedMessage.sender.officialAccount}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-                      <Phone className="h-5 w-5" />
-                    </button>
-                    <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-                      <Archive className="h-5 w-5" />
-                    </button>
-                    <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-                      <MoreHorizontal className="h-5 w-5" />
-                    </button>
                   </div>
                 </div>
-              </div>
 
-              {/* メッセージ内容 - 余白最小化 */}
-              <div className="flex-1 bg-gray-50 px-2 py-1">
-                <div className="bg-white rounded-lg p-3 shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-gray-500">
-                      {formatTime(selectedMessage.timestamp)}
-                    </span>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                      selectedMessage.priority === 'urgent' ? 'bg-red-100 text-red-800' :
-                      selectedMessage.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {selectedMessage.priority === 'urgent' ? '緊急' :
-                       selectedMessage.priority === 'normal' ? '通常' : '低'}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-900 leading-relaxed">
+                {/* メッセージ内容 - 最小余白 */}
+                <div className="flex-1 p-3">
+                  <p className="text-sm text-gray-900 leading-relaxed mb-3">
                     {selectedMessage.content}
                   </p>
-                  <div className="mt-3 flex items-center justify-between">
+                  <div className="flex items-center justify-between">
                     <div className="flex space-x-1">
                       {selectedMessage.tags.map((tag, index) => (
-                        <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                        <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-blue-100 text-blue-800">
                           {tag}
                         </span>
                       ))}
                     </div>
                     <div className="flex items-center space-x-2 text-xs text-gray-500">
                       {selectedMessage.status === 'read' ? (
-                        <><Eye className="h-4 w-4" /> 既読</>
+                        <><Eye className="h-3 w-3" /> 既読</>
                       ) : (
-                        <><EyeOff className="h-4 w-4" /> 未読</>
+                        <><EyeOff className="h-3 w-3" /> 未読</>
                       )}
                     </div>
                   </div>
@@ -379,18 +401,47 @@ const MessageManagement = () => {
                   />
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center space-x-2">
+                      {/* ファイル添付ボタン */}
                       <button 
+                        onClick={handleFileUpload}
                         className="p-1.5 text-blue-500 hover:text-blue-700 rounded-full hover:bg-blue-50 transition-colors"
                         title="ファイル添付"
                       >
                         <Paperclip className="h-4 w-4" />
                       </button>
-                      <button 
-                        className="px-2 py-1 text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-full transition-colors"
-                        title="テンプレート"
-                      >
-                        📝 テンプレート
-                      </button>
+                      
+                      {/* テンプレートボタン */}
+                      <div className="relative" ref={templateMenuRef}>
+                        <button 
+                          onClick={() => setShowTemplateMenu(!showTemplateMenu)}
+                          className="px-2 py-1 text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-full transition-colors"
+                          title="テンプレート"
+                        >
+                          📝 テンプレート
+                        </button>
+                        
+                        {/* テンプレートメニュー */}
+                        {showTemplateMenu && (
+                          <div className="absolute bottom-full left-0 mb-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                            <div className="p-2 border-b border-gray-100">
+                              <p className="text-xs font-medium text-gray-700">テンプレートを選択</p>
+                            </div>
+                            <div className="max-h-40 overflow-y-auto">
+                              {messageTemplates.map((template) => (
+                                <button
+                                  key={template.id}
+                                  onClick={() => handleTemplateSelect(template)}
+                                  className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                                >
+                                  <p className="text-xs font-medium text-gray-900 mb-1">{template.name}</p>
+                                  <p className="text-xs text-gray-600 line-clamp-2">{template.content}</p>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      
                       {replyText.trim() && (
                         <button
                           onClick={handleClearReply}

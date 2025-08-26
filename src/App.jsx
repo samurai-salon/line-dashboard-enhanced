@@ -13,6 +13,7 @@ import './index.css'
 import MessageComposer from './pages/messages/MessageComposer';
 import MessageComposerSimple from './pages/messages/MessageComposerSimple';
 import MessageBroadcast from './pages/messages/MessageBroadcast';
+import MessageManagement from './pages/messages/MessageManagement';
 import BroadcastHistory from './pages/messages/BroadcastHistory';
 import EmojiTest from './pages/messages/EmojiTest';
 import DashboardEnhanced from './pages/DashboardEnhanced';
@@ -36,19 +37,22 @@ import NotificationCenter from './pages/NotificationCenter';
 // ダッシュボードページ（拡張版を使用）
 const DashboardPage = () => <DashboardEnhanced />;
 
-// MessagesPageでMessageComposerを使用
-const MessagesPage = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold text-gray-900 mb-4">
-      💬 メッセージ管理
-    </h1>
-    <MessageComposer />
-  </div>
-);
+// 新しい2パネル式メッセージ管理を使用
+const MessagesPage = () => <MessageManagement />;
 
 // シンプル版テスト用ページ
 const MessagesSimplePage = () => (
   <MessageComposerSimple />
+);
+
+// メッセージ作成ページ（従来のMessageComposer）
+const MessageComposePage = () => (
+  <div className="p-6">
+    <h1 className="text-2xl font-bold text-gray-900 mb-4">
+      ✏️ メッセージ作成
+    </h1>
+    <MessageComposer />
+  </div>
 );
 
 // 一斉配信ページ
@@ -156,6 +160,7 @@ function App() {
             {/* テスト用の直接ルート */}
             <Route path="/test-simple" element={<MessagesSimplePage />} />
             <Route path="/test-broadcast" element={<MessagesBroadcastPage />} />
+            <Route path="/message-compose" element={<MessageComposePage />} />
             <Route path="/broadcast-history" element={<BroadcastHistory />} />
             <Route path="/test-emoji" element={<EmojiTest />} />
           </Routes>

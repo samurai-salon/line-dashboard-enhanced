@@ -29,6 +29,13 @@ const MessageManagement = () => {
   const [replyText, setReplyText] = useState('');
   const [previousReplyText, setPreviousReplyText] = useState('');
 
+  // 初期選択メッセージの設定
+  useEffect(() => {
+    if (messages.length > 0 && !selectedMessage) {
+      setSelectedMessage(messages[0]);
+    }
+  }, []);
+
   // サンプルメッセージデータ
   const messages = [
     {
@@ -211,8 +218,8 @@ const MessageManagement = () => {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* 左パネル - メッセージリスト */}
-        <div className="w-1/2 bg-white border-r border-gray-200 flex flex-col">
+        {/* 左パネル - メッセージリスト (モバイルでは非表示) */}
+        <div className="w-1/2 md:flex hidden bg-white border-r border-gray-200 flex flex-col">
           {/* 検索・フィルター */}
           <div className="p-4 border-b border-gray-200">
             <div className="relative mb-3">
@@ -305,8 +312,33 @@ const MessageManagement = () => {
           </div>
         </div>
 
-        {/* 右パネル - メッセージ詳細&返信 */}
-        <div className="w-1/2 flex flex-col">
+        {/* モバイル用メッセージリスト */}
+        <div className="md:hidden w-full bg-white flex flex-col">
+          {/* メッセージ選択リスト - コンパクト */}
+          <div className="border-b border-gray-200">
+            <div className="flex space-x-2 p-2 overflow-x-auto">
+              {filteredMessages.slice(0, 3).map((message) => (
+                <button
+                  key={message.id}
+                  onClick={() => setSelectedMessage(message)}
+                  className={`flex-shrink-0 px-3 py-2 rounded-lg text-xs transition-colors ${
+                    selectedMessage?.id === message.id 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  <div className="text-left">
+                    <div className="font-semibold truncate w-16">{message.sender.name}</div>
+                    <div className="text-xs opacity-75">{message.status === 'unread' ? '未読' : '既読'}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 右パネル - メッセージ詳細&返信 (デスクトップは半分幅、モバイルは全幅) */}
+        <div className="w-1/2 md:w-1/2 w-full flex flex-col">
           {selectedMessage ? (
             <>
               {/* 完全統合レイアウト - 余白最小化 */}
@@ -357,14 +389,14 @@ const MessageManagement = () => {
                   </div>
                 </div>
 
-                {/* クイックリプライ - 直接配置 */}
+                {/* クイックリプライ - 水平スクロール対応 */}
                 <div className="px-2 py-1 border-t border-gray-200">
-                  <div className="flex flex-wrap gap-1 mb-2">
+                  <div className="flex gap-2 overflow-x-auto pb-1">
                     {quickReplies.map((reply, index) => (
                       <button
                         key={index}
                         onClick={() => handleQuickReply(reply)}
-                        className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+                        className="flex-shrink-0 px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors whitespace-nowrap"
                       >
                         {reply}
                       </button>
@@ -372,41 +404,41 @@ const MessageManagement = () => {
                   </div>
                 </div>
 
-                {/* 返信入力エリア - 直結 */}
-                <div className="px-2 py-1 bg-white">
-                  <div className="flex items-end space-x-2">
+                {/* 返信入力エリア - モバイル最適化 */}
+                <div className="px-2 py-2 bg-white">
+                  <div className="flex items-center space-x-2">
                     <div className="flex-1">
                       <textarea
                         value={replyText}
                         onChange={(e) => setReplyText(e.target.value)}
                         placeholder="メッセージを入力..."
-                        className="w-full p-2 border border-gray-300 rounded-lg resize-none focus:ring-1 focus:ring-blue-500 text-sm"
-                        rows="2"
+                        className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-1 focus:ring-blue-500 text-sm"
+                        rows="3"
                       />
                     </div>
-                    <div className="flex flex-col space-y-1">
+                    <div className="flex flex-col space-y-2">
                       <button 
                         onClick={handleFileUpload}
-                        className="p-2 text-blue-500 hover:text-blue-700 rounded-lg hover:bg-blue-50 transition-colors"
+                        className="p-3 text-blue-500 hover:text-blue-700 rounded-lg hover:bg-blue-50 transition-colors"
                         title="ファイル添付"
                       >
-                        <Paperclip className="h-4 w-4" />
+                        <Paperclip className="h-5 w-5" />
                       </button>
                       <button
                         onClick={handleSendReply}
                         disabled={!replyText.trim()}
-                        className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="送信"
                       >
-                        <Send className="h-4 w-4" />
+                        <Send className="h-5 w-5" />
                       </button>
                     </div>
                   </div>
                   {replyText.trim() && (
-                    <div className="flex justify-end mt-1">
+                    <div className="flex justify-end mt-2">
                       <button
                         onClick={handleClearReply}
-                        className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+                        className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
                       >
                         クリア
                       </button>

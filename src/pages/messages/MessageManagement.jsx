@@ -53,7 +53,8 @@ const MessageManagement = () => {
       priority: 'normal',
       tags: ['商品問い合わせ'],
       hasAttachment: false,
-      threadCount: 1
+      threadCount: 1,
+      history: [] // 履歴なし
     },
     {
       id: 2,
@@ -70,7 +71,23 @@ const MessageManagement = () => {
       priority: 'urgent',
       tags: ['配送問題'],
       hasAttachment: false,
-      threadCount: 3
+      threadCount: 3,
+      history: [
+        {
+          id: 'h2-1',
+          content: '承知いたしました。配送状況を確認してご連絡いたします。',
+          timestamp: '2024-01-14T16:30:00Z',
+          sender: { name: '管理者', isAdmin: true },
+          type: 'reply'
+        },
+        {
+          id: 'h2-2',
+          content: '注文番号ABC123の配送について問い合わせです。',
+          timestamp: '2024-01-14T15:45:00Z',
+          sender: { name: '佐藤花子', isAdmin: false },
+          type: 'message'
+        }
+      ]
     },
     {
       id: 3,
@@ -87,7 +104,16 @@ const MessageManagement = () => {
       priority: 'normal',
       tags: ['返品'],
       hasAttachment: false,
-      threadCount: 2
+      threadCount: 2,
+      history: [
+        {
+          id: 'h3-1',
+          content: '返品手続きについてご案内いたします。まず購入日をお教えください。',
+          timestamp: '2024-01-14T14:20:00Z',
+          sender: { name: '管理者', isAdmin: true },
+          type: 'reply'
+        }
+      ]
     },
     {
       id: 4,
@@ -104,7 +130,8 @@ const MessageManagement = () => {
       priority: 'low',
       tags: ['使い方'],
       hasAttachment: false,
-      threadCount: 1
+      threadCount: 1,
+      history: []
     }
   ];
 
@@ -369,37 +396,74 @@ const MessageManagement = () => {
                 </div>
               </div>
 
-              {/* 2. 中央部 - チャット内容表示エリア（大きく確保） */}
-              <div className="flex-1 bg-gray-50 p-4 overflow-y-auto">
-                <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-                  <p className="text-base text-gray-900 leading-relaxed mb-3">
-                    {selectedMessage.content}
-                  </p>
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex space-x-2">
-                      {selectedMessage.tags.map((tag, index) => (
-                        <span key={index} className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <span className={`text-xs ${
-                      selectedMessage.priority === 'urgent' ? 'text-red-600' :
-                      selectedMessage.priority === 'normal' ? 'text-blue-600' :
-                      'text-gray-500'
+              {/* 2. 中央部 - チャット履歴表示エリア（大きく確保） */}
+              <div className="flex-1 bg-gray-50 p-3 overflow-y-auto">
+                <div className="space-y-3">
+                  {/* 過去の履歴メッセージを古い順に表示 */}
+                  {selectedMessage.history && selectedMessage.history
+                    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+                    .map((historyItem) => (
+                    <div key={historyItem.id} className={`flex ${
+                      historyItem.sender.isAdmin ? 'justify-end' : 'justify-start'
                     }`}>
-                      {selectedMessage.priority === 'urgent' ? '緊急' : 
-                       selectedMessage.priority === 'normal' ? '通常' : '低'}
-                    </span>
+                      <div className={`max-w-xs lg:max-w-md px-3 py-2 rounded-lg shadow-sm ${
+                        historyItem.sender.isAdmin 
+                          ? 'bg-blue-500 text-white ml-auto' 
+                          : 'bg-white text-gray-900'
+                      }`}>
+                        <div className="flex items-center mb-1">
+                          <span className={`text-xs font-medium ${
+                            historyItem.sender.isAdmin ? 'text-blue-100' : 'text-gray-600'
+                          }`}>
+                            {historyItem.sender.name}
+                          </span>
+                          <span className={`text-xs ml-2 ${
+                            historyItem.sender.isAdmin ? 'text-blue-200' : 'text-gray-400'
+                          }`}>
+                            {formatTime(historyItem.timestamp)}
+                          </span>
+                        </div>
+                        <p className="text-sm leading-relaxed">
+                          {historyItem.content}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {/* 最新メッセージ */}
+                  <div className="flex justify-start">
+                    <div className="max-w-xs lg:max-w-md bg-white text-gray-900 px-3 py-2 rounded-lg shadow-sm">
+                      <div className="flex items-center mb-1">
+                        <span className="text-xs font-medium text-gray-600">
+                          {selectedMessage.sender.name}
+                        </span>
+                        <span className="text-xs text-gray-400 ml-2">
+                          {formatTime(selectedMessage.timestamp)}
+                        </span>
+                      </div>
+                      <p className="text-sm leading-relaxed mb-2">
+                        {selectedMessage.content}
+                      </p>
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex space-x-1">
+                          {selectedMessage.tags.map((tag, index) => (
+                            <span key={index} className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <span className={`${
+                          selectedMessage.priority === 'urgent' ? 'text-red-600' :
+                          selectedMessage.priority === 'normal' ? 'text-blue-600' :
+                          'text-gray-500'
+                        }`}>
+                          {selectedMessage.priority === 'urgent' ? '緊急' : 
+                           selectedMessage.priority === 'normal' ? '通常' : '低'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                
-                {/* 追加のメッセージ履歴があればここに表示 */}
-                {selectedMessage.threadCount > 1 && (
-                  <div className="text-center text-sm text-gray-500 py-2">
-                    {selectedMessage.threadCount - 1}件の過去のやりとり
-                  </div>
-                )}
               </div>
 
               {/* 3. 返信入力フォーム */}

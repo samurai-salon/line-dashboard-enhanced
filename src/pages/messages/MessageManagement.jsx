@@ -19,7 +19,7 @@ import {
   Archive,
   Tag,
   Paperclip,
-  Smile
+  FileText
 } from 'lucide-react';
 
 const MessageManagement = () => {
@@ -294,7 +294,7 @@ const MessageManagement = () => {
           {selectedMessage ? (
             <>
               {/* メッセージ詳細ヘッダー */}
-              <div className="bg-white border-b border-gray-200 p-4">
+              <div className="bg-white border-b border-gray-200 px-4 py-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -328,8 +328,8 @@ const MessageManagement = () => {
                 </div>
               </div>
 
-              {/* メッセージ内容 */}
-              <div className="flex-1 bg-gray-50 p-2 overflow-y-auto">
+              {/* メッセージ内容 - 余白最小化 */}
+              <div className="flex-1 bg-gray-50 px-2 py-1">
                 <div className="bg-white rounded-lg p-3 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-gray-500">
@@ -347,7 +347,7 @@ const MessageManagement = () => {
                   <p className="text-sm text-gray-900 leading-relaxed">
                     {selectedMessage.content}
                   </p>
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="mt-3 flex items-center justify-between">
                     <div className="flex space-x-1">
                       {selectedMessage.tags.map((tag, index) => (
                         <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
@@ -366,10 +366,10 @@ const MessageManagement = () => {
                 </div>
               </div>
 
-              {/* 返信エリア */}
-              <div className="bg-white border-t border-gray-200 p-3">
-                {/* 返信入力 - 上に移動 */}
-                <div className="relative mb-3">
+              {/* 返信エリア - 最小パディング */}
+              <div className="bg-white border-t border-gray-200 px-3 py-2">
+                {/* 返信入力 */}
+                <div className="relative mb-2">
                   <textarea
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
@@ -379,11 +379,17 @@ const MessageManagement = () => {
                   />
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center space-x-2">
-                      <button className="p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
+                      <button 
+                        className="p-1.5 text-blue-500 hover:text-blue-700 rounded-full hover:bg-blue-50 transition-colors"
+                        title="ファイル添付"
+                      >
                         <Paperclip className="h-4 w-4" />
                       </button>
-                      <button className="p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-                        <Smile className="h-4 w-4" />
+                      <button 
+                        className="px-2 py-1 text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-full transition-colors"
+                        title="テンプレート"
+                      >
+                        📝 テンプレート
                       </button>
                       {replyText.trim() && (
                         <button

@@ -28,20 +28,6 @@ const MessageManagement = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [replyText, setReplyText] = useState('');
   const [previousReplyText, setPreviousReplyText] = useState('');
-  const [showTemplateMenu, setShowTemplateMenu] = useState(false);
-  const [showFileMenu, setShowFileMenu] = useState(false);
-  const templateMenuRef = useRef(null);
-
-  // メニュー外クリックで閉じる
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (templateMenuRef.current && !templateMenuRef.current.contains(event.target)) {
-        setShowTemplateMenu(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   // サンプルメッセージデータ
   const messages = [
@@ -123,12 +109,6 @@ const MessageManagement = () => {
     "恐れ入りますが、もう少しお待ちください。"
   ];
 
-  const messageTemplates = [
-    { id: 1, name: "商品問い合わせ返答", content: "商品についてお問い合わせいただき、ありがとうございます。詳細については担当者より後程ご連絡いたします。" },
-    { id: 2, name: "配送確認", content: "配送状況についてお調べいたします。お客様の注文番号をお教えいただけますでしょうか。" },
-    { id: 3, name: "返品対応", content: "返品をご希望の場合は、購入日から30日以内であれば承っております。返品手順をご案内いたします。" },
-    { id: 4, name: "営業時間案内", content: "営業時間は平日9:00-18:00となっております。お急ぎの場合は緊急連絡先までご連絡ください。" }
-  ];
 
   const filteredMessages = messages.filter(message => {
     const matchesSearch = message.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -193,12 +173,6 @@ const MessageManagement = () => {
     setPreviousReplyText('');
   };
 
-  const handleTemplateSelect = (template) => {
-    setPreviousReplyText(replyText);
-    setReplyText(template.content);
-    setShowTemplateMenu(false);
-  };
-
   const handleFileUpload = () => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -207,11 +181,11 @@ const MessageManagement = () => {
       const file = e.target.files[0];
       if (file) {
         console.log('File selected:', file.name);
-        // ここで実際のファイルアップロード処理
+        // ここで実際のファイルアップロード処理を追加
+        alert(`ファイル "${file.name}" を選択しました`);
       }
     };
     input.click();
-    setShowFileMenu(false);
   };
 
   return (
@@ -335,49 +309,45 @@ const MessageManagement = () => {
         <div className="w-1/2 flex flex-col">
           {selectedMessage ? (
             <>
-              {/* 統合されたメッセージ表示エリア */}
+              {/* 完全統合レイアウト - 余白最小化 */}
               <div className="flex-1 bg-white flex flex-col">
-                {/* ユーザー情報ヘッダー - コンパクト */}
-                <div className="border-b border-gray-200 px-3 py-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs font-semibold">
-                          {selectedMessage.sender.name.charAt(0)}
-                        </span>
-                      </div>
-                      <div>
-                        <h3 className="text-xs font-semibold text-gray-900">{selectedMessage.sender.name}</h3>
-                        <p className="text-xs text-blue-600">{selectedMessage.sender.officialAccount}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <span className={`px-1.5 py-0.5 rounded-full text-xs font-medium ${
-                        selectedMessage.priority === 'urgent' ? 'bg-red-100 text-red-800' :
-                        selectedMessage.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {selectedMessage.priority === 'urgent' ? '緊急' : selectedMessage.priority === 'normal' ? '通常' : '低'}
+                {/* ヘッダー情報 - 最小限 */}
+                <div className="flex items-center justify-between px-2 py-1 border-b border-gray-200">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs font-semibold">
+                        {selectedMessage.sender.name.charAt(0)}
                       </span>
-                      <span className="text-xs text-gray-500">{formatTime(selectedMessage.timestamp)}</span>
                     </div>
+                    <span className="text-xs font-semibold text-gray-900">{selectedMessage.sender.name}</span>
+                    <span className="text-xs text-blue-600">{selectedMessage.sender.officialAccount}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span className={`px-1 py-0.5 rounded text-xs ${
+                      selectedMessage.priority === 'urgent' ? 'bg-red-100 text-red-700' :
+                      selectedMessage.priority === 'normal' ? 'bg-blue-100 text-blue-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {selectedMessage.priority === 'urgent' ? '緊急' : selectedMessage.priority === 'normal' ? '通常' : '低'}
+                    </span>
+                    <span className="text-xs text-gray-500">{formatTime(selectedMessage.timestamp)}</span>
                   </div>
                 </div>
 
-                {/* メッセージ内容 - 最小余白 */}
-                <div className="flex-1 p-3">
-                  <p className="text-sm text-gray-900 leading-relaxed mb-3">
+                {/* メッセージ本文エリア */}
+                <div className="flex-1 px-2 py-2">
+                  <p className="text-sm text-gray-900 mb-2">
                     {selectedMessage.content}
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex space-x-1">
                       {selectedMessage.tags.map((tag, index) => (
-                        <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-blue-100 text-blue-800">
+                        <span key={index} className="px-1 py-0.5 rounded text-xs bg-blue-100 text-blue-800">
                           {tag}
                         </span>
                       ))}
                     </div>
-                    <div className="flex items-center space-x-2 text-xs text-gray-500">
+                    <div className="flex items-center space-x-1 text-xs text-gray-500">
                       {selectedMessage.status === 'read' ? (
                         <><Eye className="h-3 w-3" /> 既読</>
                       ) : (
@@ -386,86 +356,10 @@ const MessageManagement = () => {
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* 返信エリア - 最小パディング */}
-              <div className="bg-white border-t border-gray-200 px-3 py-2">
-                {/* 返信入力 */}
-                <div className="relative mb-2">
-                  <textarea
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    placeholder="メッセージを入力してください..."
-                    className="w-full p-2 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    rows="2"
-                  />
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center space-x-2">
-                      {/* ファイル添付ボタン */}
-                      <button 
-                        onClick={handleFileUpload}
-                        className="p-1.5 text-blue-500 hover:text-blue-700 rounded-full hover:bg-blue-50 transition-colors"
-                        title="ファイル添付"
-                      >
-                        <Paperclip className="h-4 w-4" />
-                      </button>
-                      
-                      {/* テンプレートボタン */}
-                      <div className="relative" ref={templateMenuRef}>
-                        <button 
-                          onClick={() => setShowTemplateMenu(!showTemplateMenu)}
-                          className="px-2 py-1 text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-full transition-colors"
-                          title="テンプレート"
-                        >
-                          📝 テンプレート
-                        </button>
-                        
-                        {/* テンプレートメニュー */}
-                        {showTemplateMenu && (
-                          <div className="absolute bottom-full left-0 mb-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                            <div className="p-2 border-b border-gray-100">
-                              <p className="text-xs font-medium text-gray-700">テンプレートを選択</p>
-                            </div>
-                            <div className="max-h-40 overflow-y-auto">
-                              {messageTemplates.map((template) => (
-                                <button
-                                  key={template.id}
-                                  onClick={() => handleTemplateSelect(template)}
-                                  className="w-full text-left px-3 py-2 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                                >
-                                  <p className="text-xs font-medium text-gray-900 mb-1">{template.name}</p>
-                                  <p className="text-xs text-gray-600 line-clamp-2">{template.content}</p>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      
-                      {replyText.trim() && (
-                        <button
-                          onClick={handleClearReply}
-                          className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
-                        >
-                          クリア
-                        </button>
-                      )}
-                    </div>
-                    <button
-                      onClick={handleSendReply}
-                      disabled={!replyText.trim()}
-                      className="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Send className="h-3 w-3 mr-1" />
-                      送信
-                    </button>
-                  </div>
-                </div>
-
-                {/* クイックリプライ - 下に移動 */}
-                <div>
-                  <h4 className="text-xs font-medium text-gray-700 mb-2">クイックリプライ</h4>
-                  <div className="flex flex-wrap gap-2">
+                {/* クイックリプライ - 直接配置 */}
+                <div className="px-2 py-1 border-t border-gray-200">
+                  <div className="flex flex-wrap gap-1 mb-2">
                     {quickReplies.map((reply, index) => (
                       <button
                         key={index}
@@ -476,6 +370,48 @@ const MessageManagement = () => {
                       </button>
                     ))}
                   </div>
+                </div>
+
+                {/* 返信入力エリア - 直結 */}
+                <div className="px-2 py-1 bg-white">
+                  <div className="flex items-end space-x-2">
+                    <div className="flex-1">
+                      <textarea
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        placeholder="メッセージを入力..."
+                        className="w-full p-2 border border-gray-300 rounded-lg resize-none focus:ring-1 focus:ring-blue-500 text-sm"
+                        rows="2"
+                      />
+                    </div>
+                    <div className="flex flex-col space-y-1">
+                      <button 
+                        onClick={handleFileUpload}
+                        className="p-2 text-blue-500 hover:text-blue-700 rounded-lg hover:bg-blue-50 transition-colors"
+                        title="ファイル添付"
+                      >
+                        <Paperclip className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={handleSendReply}
+                        disabled={!replyText.trim()}
+                        className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        title="送信"
+                      >
+                        <Send className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                  {replyText.trim() && (
+                    <div className="flex justify-end mt-1">
+                      <button
+                        onClick={handleClearReply}
+                        className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
+                      >
+                        クリア
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </>
